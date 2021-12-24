@@ -1,4 +1,4 @@
-# mall-admin
+# mall-admin-frontend
 
 ## Project setup
 ```
