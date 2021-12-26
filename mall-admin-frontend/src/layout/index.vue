@@ -1,31 +1,33 @@
 <template>
-  <div class="home" style="height: 100%;">
+  <div class="main-layout">
     <el-row style="height:100%">
       <el-col :span="3">
         <SiderBar />
       </el-col>
       <el-col :span="21">
-        <HelloWorld msg="Welcome"/>
+        <AppMain />
+        <router-view />
       </el-col>
     </el-row>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-import SiderBar from '@/layout/SiderBar'
-
+import SiderBar from './SiderBar'
+import AppMain from './AppMain'
 export default {
-  name: 'Home',
-  components: {
-    HelloWorld,
-    SiderBar
-  }
+    name: 'layout',
+    components: {
+        SiderBar,
+        AppMain,
+    }
 }
 </script>
 
 <style lang="scss" scoped>
+.main-layout {
+    height: 100%;
+}
 .el-col {
   height: 100%;
   .el-menu {
