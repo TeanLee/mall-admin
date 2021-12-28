@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -10,26 +9,61 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: Home,
-  },
-  {
-    path: '/about',
-    name: 'About',
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    redirect: '/product',
+    hidden: true,
   },
   {
     path: '/product',
+    name: 'product',
+    title: '商品管理',
     component: Layout,
+    redirect: '/product/list',
     children: [
       {
         path: 'list',
         name: 'product-list',
+        title: '商品列表',
+        meta: { title: 'Dashboard', icon: 'dashboard', affix: true },
         component: () => import('@/views/product/list')
       },
       {
         path: 'add',
         name: 'product-add',
+        title: '添加商品',
+        meta: { title: 'Documentation', icon: 'documentation', affix: true },
         component: () => import('@/views/product/add')
+      }
+    ]
+  },
+  {
+    path: '/order',
+    name: 'order',
+    title: '订单管理',
+    component: Layout,
+    redirect: '/order/list',
+    children: [
+      {
+        path: 'list',
+        name: 'order-list',
+        title: '订单管理',
+        meta: { title: 'Documentation', icon: 'el-icon-s-order', affix: true },
+        component: () => import('@/views/order/list')
+      }
+    ]
+  },
+  {
+    path: '/category',
+    name: 'category',
+    title: '分类管理',
+    component: Layout,
+    redirect: '/category/list',
+    children: [
+      {
+        path: 'list',
+        name: 'category-list',
+        title: '分类列表',
+        meta: { title: 'Documentation', icon: 'el-icon-s-grid', affix: true },
+        component: () => import('@/views/category/list')
       }
     ]
   },
