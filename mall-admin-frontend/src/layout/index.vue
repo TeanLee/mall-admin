@@ -6,7 +6,6 @@
       </el-col>
       <el-col :span="21">
         <AppMain />
-        <router-view />
       </el-col>
     </el-row>
   </div>
