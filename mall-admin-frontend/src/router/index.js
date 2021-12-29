@@ -62,8 +62,47 @@ const routes = [
         path: 'list',
         name: 'category-list',
         title: '分类列表',
-        meta: { title: 'Documentation', icon: 'el-icon-s-grid', affix: true },
+        meta: { title: 'Documentation', icon: 'el-icon-s-order', affix: true },
         component: () => import('@/views/category/list')
+      }
+    ]
+  },
+  {
+    path: '/user',
+    name: 'user',
+    title: '用户管理',
+    component: Layout,
+    redirect: '/user/list',
+    children: [
+      {
+        path: 'list',
+        name: 'user-list',
+        title: '用户列表',
+        meta: { title: 'Documentation', icon: '', affix: true },
+        component: () => import('@/views/user/list')
+      },
+      {
+        path: 'summary',
+        name: 'user-summary',
+        title: '用户统计',
+        meta: { title: 'Documentation', icon: '', affix: true },
+        component: () => import('@/views/user/summary')
+      }
+    ]
+  },
+  {
+    path: '/permission',
+    name: 'permission',
+    title: '权限管理',
+    component: Layout,
+    redirect: '/permission/role',
+    children: [
+      {
+        path: 'role',
+        name: 'permission-role',
+        title: '权限管理',
+        meta: { title: 'Documentation', icon: 'el-icon-s-order', affix: true },
+        component: () => import('@/views/permission/role')
       }
     ]
   },
