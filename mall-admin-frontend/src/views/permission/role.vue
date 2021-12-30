@@ -29,7 +29,7 @@
     </el-table>
     <el-button class="add-user" type="primary" @click.native="dialogFormVisible=true">新增用户</el-button>
 
-    <el-dialog :title="dialogType === 'edit' ? '编辑用户' : '新增用户'" :visible.sync="dialogFormVisible" :close-on-click-modal="false" :before-close="handleClose" destroy-on-close>
+    <el-dialog :title="dialogType === 'edit' ? '编辑用户' : '新增用户'" :visible.sync="dialogFormVisible" :close-on-click-modal="false" destroy-on-close ref="dialogForm" @close="closeDialog">
       <el-form :model="form" :rules="rules">
         <el-form-item label="用户角色" label-width="120px">
           <el-select v-model="form.role" placeholder="请选择活动区域">
@@ -99,12 +99,11 @@ export default {
       this.dialogType = 'edit';
       this.dialogFormVisible = true;
     },
-    handleClose() {
-      for(let key in this.form) {
-        delete this.form[key]
-      }
+    closeDialog() {
+      this.form = {};
+      this.dialogFormVisible = false;
       this.dialogType = '';
-    }
+    },
   }
 }
 </script>
