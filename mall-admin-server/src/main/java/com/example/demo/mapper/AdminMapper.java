@@ -6,4 +6,5 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface AdminMapper {
     public Admin getUserByUsername(String username);
+    long reg(Admin admin);
 }

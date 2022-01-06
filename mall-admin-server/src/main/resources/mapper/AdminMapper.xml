@@ -7,4 +7,8 @@
     <select id="getUserByUsername" resultType="com.example.demo.bean.Admin">
         SELECT * FROM mall.admin where username=#{username};;
     </select>
+
+    <insert id="reg" useGeneratedKeys="true">
+        INSERT INTO mall.admin set username=#{username},password=#{password}
+    </insert>
 </mapper>
