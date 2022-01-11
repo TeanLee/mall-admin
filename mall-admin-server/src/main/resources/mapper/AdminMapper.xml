@@ -2,13 +2,12 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.demo.mapper.AdminMapper">
+<mapper namespace="com.ting.demo.mapper.AdminMapper">
 
-    <select id="getUserByUsername" resultType="com.example.demo.bean.Admin">
-        SELECT * FROM mall.admin where username=#{username};;
+    <select id="loadUserByUsername" resultType="com.ting.demo.bean.Admin">
+        SELECT * FROM mall.admin WHERE username=#{username}
     </select>
-
-    <insert id="reg" useGeneratedKeys="true">
-        INSERT INTO mall.admin set username=#{username},password=#{password}
+    <insert id="reg" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO user set username=#{username},password=#{password}
     </insert>
 </mapper>
