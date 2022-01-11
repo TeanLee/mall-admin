@@ -6,12 +6,12 @@
 
 
     <select id="getRolesByUid" parameterType="long" resultType="com.ting.demo.bean.Role">
-        SELECT * FROM mall.role WHERE role_id=#{roleId} AND admin_id=#{adminId}
+        SELECT r.* FROM mall.role r, mall.role_admin ra WHERE r.`role_id`=ra.`role_id` AND ra.`admin_id`=#{uid}
     </select>
     <insert id="addRoles">
-        INSERT INTO mall.role_admin VALUES
+        INSERT INTO mall.role_admin(role_id, admin_id) VALUES
         <foreach collection="roles" item="role" separator=",">
-            (null,#{role},#{adminId})
+            (#{role},#{adminId})
         </foreach>
     </insert>
 </mapper>

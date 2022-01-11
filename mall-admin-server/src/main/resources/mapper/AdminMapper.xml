@@ -7,7 +7,7 @@
     <select id="loadUserByUsername" resultType="com.ting.demo.bean.Admin">
         SELECT * FROM mall.admin WHERE username=#{username}
     </select>
-    <insert id="reg" useGeneratedKeys="true" keyProperty="id">
-        INSERT INTO user set username=#{username},password=#{password}
+    <insert id="reg" useGeneratedKeys="true" keyProperty="adminId"  keyColumn="admin_id">
+        INSERT INTO mall.admin(username, password) values(#{username}, #{password});
     </insert>
 </mapper>

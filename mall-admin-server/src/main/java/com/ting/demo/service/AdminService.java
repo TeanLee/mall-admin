@@ -34,17 +34,16 @@ public class AdminService implements UserDetailsService {
     AdminMapper adminMapper;
     @Autowired
     RolesMapper rolesMapper;
-//    @Autowired
-//    PasswordEncoder passwordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-//        Admin user = adminMapper.loadUserByUsername(username);
-//        log.info("loadUserByUsername" + username);
-//        if (user == null) {
-//            //避免返回null，这里返回一个不含有任何值的User对象，在后期的密码比对过程中一样会验证失败
-//            return new Admin();
-//        }
+        Admin user = adminMapper.loadUserByUsername(username);
+        log.info("loadUserByUsername" + username);
+        if (user == null) {
+            //避免返回null，这里返回一个不含有任何值的User对象，在后期的密码比对过程中一样会验证失败
+            return new Admin();
+        }
+//        String password = user.getPassword();
 //        //查询用户的角色信息，并返回存入user中
 //        List<Role> roles = rolesMapper.getRolesByUid(user.getId());
 //        user.setRoles(roles);
@@ -57,21 +56,12 @@ public class AdminService implements UserDetailsService {
 //        if (username.equalsIgnoreCase("1")) {
 //            throw new BadCredentialsException("帐号不存在，请重新输入");
 //        }
-        if (username.equals("1")) {
-            log.info("username.equals-username.equals");
-            //避免返回null，这里返回一个不含有任何值的User对象，在后期的密码比对过程中一样会验证失败
-//            throw new BadCredentialsException("用户名不存在");
-            throw new UsernameNotFoundException("用户名不存在");
-        }
         UserDetails userDetails =null;
-        List<GrantedAuthority> authList = new ArrayList<GrantedAuthority>();
-        authList.add(new SimpleGrantedAuthority("ROLE_USER"));
-        authList.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        String password ="654321";
-        //如果使用BCryptPasswordEncoder加密方式就去掉这两行注释
-        //BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        //password = encoder.encode("654321");
-        userDetails = new User(username,password,true,true,true,true,authList);
+//        List<GrantedAuthority> authList = new ArrayList<GrantedAuthority>();
+        List<Role> roles = rolesMapper.getRolesByUid(user.getAdminId());
+        user.setRoles(roles);
+        String password = user.getPassword();
+        userDetails = new Admin(username,password,roles);
         return userDetails;
     }
 
@@ -86,13 +76,14 @@ public class AdminService implements UserDetailsService {
         if (loadUserByUsername != null) {
             return 1;
         }
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         //插入用户,插入之前先对密码进行加密
-//        admin.setPassword(passwordEncoder.encode(admin.getPassword()));
+//        admin.setPassword(encoder.encode(admin.getPassword()));
         admin.setPassword(admin.getPassword());
         long result = adminMapper.reg(admin);
         //配置用户的角色，默认都是普通用户
         String[] roles = new String[]{"-1"};
-        int i = rolesMapper.addRoles(roles, admin.getId());
+        int i = rolesMapper.addRoles(roles, admin.getAdminId());
         boolean b = i == roles.length && result == 1;
         if (b) {
             return 0;

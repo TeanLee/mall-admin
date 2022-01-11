@@ -17,10 +17,16 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Admin implements UserDetails {
-    private Long id;
+    private Long adminId;
     private String username;
     private String password;
     private List<Role> roles;
+
+    public Admin(String username, String password, List<Role> roles) {
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
