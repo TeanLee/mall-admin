@@ -26,7 +26,8 @@ public class LoginRegController {
     public void getRole() {
         UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         Collection<? extends GrantedAuthority> auths = userDetails.getAuthorities();
-        log.info("GrantedAuthority" + String.valueOf(auths));
+        log.info("GrantedAuthority：" + String.valueOf(auths));
+        log.info("admin.getRoles()：" + String.valueOf(admin.getRoles()));
     }
 
     @PostMapping("/reg")

@@ -34,6 +34,8 @@ public class AdminService implements UserDetailsService {
     AdminMapper adminMapper;
     @Autowired
     RolesMapper rolesMapper;
+    @Autowired
+    Admin admin;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -59,7 +61,10 @@ public class AdminService implements UserDetailsService {
         UserDetails userDetails =null;
 //        List<GrantedAuthority> authList = new ArrayList<GrantedAuthority>();
         List<Role> roles = rolesMapper.getRolesByUid(user.getAdminId());
+        log.info("List<Role> roles：" + user.getAdminId());
+        log.info("List<Role> roles：" + roles);
         user.setRoles(roles);
+        admin.setRoles(roles);
         String password = user.getPassword();
         userDetails = new Admin(username,password,roles);
         return userDetails;

@@ -6,7 +6,7 @@
 
 
     <select id="getRolesByUid" parameterType="long" resultType="com.ting.demo.bean.Role">
-        SELECT r.* FROM mall.role r, mall.role_admin ra WHERE r.`role_id`=ra.`role_id` AND ra.`admin_id`=#{uid}
+        SELECT * FROM mall.role r, mall.role_admin ra WHERE r.role_id=ra.role_id AND ra.admin_id=#{uid}
     </select>
     <insert id="addRoles">
         INSERT INTO mall.role_admin(role_id, admin_id) VALUES

@@ -4,6 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
 
-
+    <settings>
+        <setting name="logImpl" value="STDOUT_LOGGING" />
+    </settings>
     <!-- 由于Spring Boot自动配置缘故，此处不必配置，只用来做做样。-->
 </configuration>
