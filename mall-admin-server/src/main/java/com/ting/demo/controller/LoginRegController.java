@@ -19,7 +19,6 @@ public class LoginRegController {
 
     @PostMapping("/reg")
     public RespBean reg(Admin admin) {
-        log.info("controller" + admin.getUsername());
         int result = loginRegService.reg(admin);
         if (result == 0) {
             //成功

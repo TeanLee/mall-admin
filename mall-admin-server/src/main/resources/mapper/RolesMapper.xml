@@ -14,4 +14,7 @@
             (#{role},#{adminId})
         </foreach>
     </insert>
+    <update id="updataRoleByAdminId">
+        update mall.role_admin set role_id=#{roleId} where admin_id=#{adminId};
+    </update>
 </mapper>

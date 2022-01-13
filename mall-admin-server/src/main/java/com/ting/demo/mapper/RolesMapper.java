@@ -11,4 +11,5 @@ import java.util.List;
 public interface RolesMapper {
     List<Role> getRolesByUid(Long uid);
     int addRoles(@Param("roles") String[] roles, @Param("adminId") Long uid);
+    int updataRoleByAdminId(@Param("adminId") Integer adminId, @Param("roleId") Integer roleId);
 }
