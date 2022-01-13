@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ting.demo.mapper.CategoryMapper">
+    <select id="getAllCategories" resultMap="allCategories">
+        SELECT * FROM mall.category;
+    </select>
+    <resultMap id="allCategories" type="com.ting.demo.bean.Category">
+        <id column="categoryId" property="categoryId" />
+        <result column="category" property="category" />
+        <result column="icon" property="icon" />
+        <result column="color" property="color" />
+        <result column="name" property="name" />
+    </resultMap>
+    <update id="updataRoleByAdminId">
+        update mall.role_admin set role_id=#{roleId} where admin_id=#{adminId};
+    </update>
+</mapper>
