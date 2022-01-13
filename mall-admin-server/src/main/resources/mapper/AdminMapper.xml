@@ -10,4 +10,16 @@
     <insert id="reg" useGeneratedKeys="true" keyProperty="adminId"  keyColumn="admin_id">
         INSERT INTO mall.admin(username, password) values(#{username}, #{password});
     </insert>
+    <update id="updateAdmin">
+        update mall.admin
+        <set>
+            <if test="username != ''">
+                username = #{username},
+            </if>
+            <if test="password != ''">
+                password=#{password},
+            </if>
+        </set>
+        where admin_id = #{adminId}
+    </update>
 </mapper>

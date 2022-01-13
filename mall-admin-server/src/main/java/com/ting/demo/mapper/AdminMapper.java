@@ -8,4 +8,5 @@ import org.apache.ibatis.annotations.Param;
 public interface AdminMapper {
     Admin loadUserByUsername(@Param("username") String username);
     long reg(Admin admin);
+    int updateAdmin(@Param("adminId") String adminId, @Param("username") String username, @Param("password") String password);
 }

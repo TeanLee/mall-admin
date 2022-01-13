@@ -2,7 +2,7 @@ package com.ting.demo.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ting.demo.bean.RespBean;
-import com.ting.demo.service.AdminService;
+import com.ting.demo.service.LoginRegService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -29,7 +29,7 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    AdminService adminService;
+    LoginRegService loginRegService;
 
     /* 新版本spring security必须要有密码加密 */
     @Bean
@@ -42,7 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public AuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(adminService);
+        daoAuthenticationProvider.setUserDetailsService(loginRegService);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         daoAuthenticationProvider.setHideUserNotFoundExceptions(false);
         return daoAuthenticationProvider;
@@ -50,7 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public UserDetailsService userDetailsService() {
-        return new AdminService();
+        return new LoginRegService();
     }
 
     @Override
@@ -86,7 +86,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     public void onAuthenticationSuccess(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) throws IOException, ServletException {
                         httpServletResponse.setContentType("application/json;charset=utf-8");
                         PrintWriter out = httpServletResponse.getWriter();
-                        RespBean respBean = new RespBean("200", "登录成功");
+                        RespBean respBean = new RespBean("200", "success", "登录成功");
                         out.write(new ObjectMapper().writeValueAsString(respBean));
                         out.flush();
                         out.close();
@@ -99,7 +99,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     public void onAuthenticationFailure(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, AuthenticationException e) throws IOException, ServletException {
                         httpServletResponse.setContentType("application/json;charset=utf-8");
                         PrintWriter out = httpServletResponse.getWriter();
-                        RespBean respBean = new RespBean("401", "登录失败");
+                        RespBean respBean = new RespBean("401", "failed", "登录失败");
                         out.write(new ObjectMapper().writeValueAsString(respBean));
                         out.flush();
                         out.close();
