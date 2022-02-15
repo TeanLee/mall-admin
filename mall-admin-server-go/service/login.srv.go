@@ -1,6 +1,8 @@
 package service
 
 import (
+	"github.com/gin-gonic/contrib/sessions"
+	"github.com/gin-gonic/gin"
 	"mall-admin-server-go/model"
 )
 
@@ -15,13 +17,34 @@ type LoginBody struct {
 	password string `json:"password"`
 }
 
-func (a LoginSrv) VerifyByUsername(username string, password string) bool {
+func (a LoginSrv) VerifyByUsername(username string, password string) (bool, *model.Admin) {
 	userInfo, _ := model.GetAdminByUsername(username)
 
 	// Check for username and password match, usually from a database
 	if password != userInfo.Password {
-		return false
+		return false, nil
 	}
 
-	return true
+	return true, userInfo
+}
+
+func GetCurrentRole(c *gin.Context) *model.Role {
+	// 获取当前 user 信息
+	session := sessions.Default(c)
+	user := session.Get("user")
+	if user == nil {
+		return nil
+	}
+	userId := user.(int)
+	roleId, err := model.GetRoleIdByAdminId(userId)
+	if err != nil {
+		panic(err)
+		return nil
+	}
+	role, err := model.GetRoleByRoleId(roleId)
+	if err != nil {
+		panic(err)
+		return nil
+	}
+	return role
 }

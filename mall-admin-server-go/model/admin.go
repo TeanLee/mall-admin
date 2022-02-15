@@ -83,7 +83,7 @@ func GetAdmins() ([]Admin, error) {
 	return admins, nil
 }
 
-func EditAdmin(id int, data interface{}) error {
+func UpdateAdmin(id int, data interface{}) error {
 	if err := db.Model(&Admin{}).Where("admin_id = ?", id).Updates(data).Error; err != nil {
 		return err
 	}

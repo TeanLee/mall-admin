@@ -21,19 +21,6 @@ const (
 	userkey = "user"
 )
 
-// AuthRequired is a simple middleware to check the session
-func AuthRequired(c *gin.Context) {
-	session := sessions.Default(c)
-	user := session.Get(userkey)
-	if user == nil {
-		// Abort the request with the appropriate error code
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-		return
-	}
-	// Continue down the chain to handler etc
-	c.Next()
-}
-
 func (a LoginAPI) Login(c *gin.Context) {
 	// 获取 body 中的所有数据
 	var loginParam LoginParam
@@ -53,7 +40,7 @@ func (a LoginAPI) Login(c *gin.Context) {
 	}
 
 	// 验证用户名和密码是否正确
-	verify := a.LoginSrv.VerifyByUsername(username, password)
+	verify, admin := a.LoginSrv.VerifyByUsername(username, password)
 
 	if verify == false {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Authentication failed"})
@@ -62,7 +49,7 @@ func (a LoginAPI) Login(c *gin.Context) {
 	session := sessions.Default(c)
 
 	// Save the username in the session
-	session.Set(userkey, username) // In real world usage you'd set this to the users ID
+	session.Set(userkey, admin.AdminId) // In real world usage you'd set this to the users ID
 	if err := session.Save(); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save session"})
 		return
@@ -89,9 +76,24 @@ func (a LoginAPI) Logout(c *gin.Context) {
 func (a LoginAPI) Me(c *gin.Context) {
 	session := sessions.Default(c)
 	user := session.Get(userkey)
-	c.JSON(http.StatusOK, gin.H{"user": user})
+	role := service.GetCurrentRole(c)
+	c.JSON(http.StatusOK, gin.H{"user": user, "role": role.RoleName})
 }
 
 func (a LoginAPI) Status(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": "You are logged in"})
 }
+
+func IsSuperAdmin(c *gin.Context) bool {
+	role := service.GetCurrentRole(c)
+	if role.RoleId == -1 {
+		return true
+	} else {
+		return false
+	}
+}
+
+//func GetCurrentRole(c *gin.Context) {
+//	session := sessions.Default(c)
+//	userId := session.Get(userkey).(int)
+//}
