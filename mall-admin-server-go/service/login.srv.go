@@ -1,16 +1,28 @@
 package service
 
-import "context"
-
 type LoginSrv struct {
 	userName string
 	password string
 	role     string
 }
 
-func (a *LoginSrv) Verify(ctx context.Context, userName, password string) bool {
-	if userName == "admin" && password == "admin" {
+type LoginBody struct {
+	userName string `json:"username"`
+	password string `json:"password"`
+}
+
+func (a LoginSrv) Verify(username string, password string) bool {
+	if username == "admin" && password == "admin" {
 		return true
+	} else {
+		return false
 	}
-	return false
+}
+
+func Verify(username string, password string) bool {
+	if username == "admin" && password == "admin" {
+		return true
+	} else {
+		return false
+	}
 }

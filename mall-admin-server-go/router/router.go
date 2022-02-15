@@ -2,14 +2,19 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"mall-admin-server-go/api"
 	"net/http"
 	"strings"
 
 	"github.com/gin-gonic/contrib/sessions"
 )
 
-func RegisterApi(app *gin.Engine) {
-	app.GET("/login", login)
+type Router struct {
+	LoginAPI api.LoginAPI
+}
+
+func (a *Router) RegisterAPI(app *gin.Engine) {
+	app.POST("/login", a.LoginAPI.Login)
 	app.GET("/logout", logout)
 
 	private := app.Group("/private")

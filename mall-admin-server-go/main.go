@@ -11,6 +11,7 @@ func main() {
 	r := gin.Default()
 	r.Use(sessions.Sessions("mysession", sessions.NewCookieStore([]byte("secret"))))
 	r.Use(middleware.Cors())
-	router.RegisterApi(r)
+	r2 := router.Router{}
+	r2.RegisterAPI(r)
 	r.Run()
 }
