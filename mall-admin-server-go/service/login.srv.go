@@ -1,5 +1,9 @@
 package service
 
+import (
+	"mall-admin-server-go/model"
+)
+
 type LoginSrv struct {
 	userName string
 	password string
@@ -11,18 +15,13 @@ type LoginBody struct {
 	password string `json:"password"`
 }
 
-func (a LoginSrv) Verify(username string, password string) bool {
-	if username == "admin" && password == "admin" {
-		return true
-	} else {
-		return false
-	}
-}
+func (a LoginSrv) VerifyByUsername(username string, password string) bool {
+	userInfo, _ := model.GetAdminByUsername(username)
 
-func Verify(username string, password string) bool {
-	if username == "admin" && password == "admin" {
-		return true
-	} else {
+	// Check for username and password match, usually from a database
+	if password != userInfo.Password {
 		return false
 	}
+
+	return true
 }

@@ -1,11 +1,8 @@
 package api
 
 import (
-	"fmt"
 	"github.com/gin-gonic/contrib/sessions"
 	"github.com/gin-gonic/gin"
-	"mall-admin-server-go/config"
-	"mall-admin-server-go/model/admin"
 	"mall-admin-server-go/service"
 	"net/http"
 	"strings"
@@ -55,10 +52,11 @@ func (a LoginAPI) Login(c *gin.Context) {
 		return
 	}
 
-	// Check for username and password match, usually from a database
-	if username != "hello" || password != "itsme" {
+	// 验证用户名和密码是否正确
+	verify := a.LoginSrv.VerifyByUsername(username, password)
+
+	if verify == false {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Authentication failed"})
-		return
 	}
 
 	session := sessions.Default(c)
@@ -70,15 +68,30 @@ func (a LoginAPI) Login(c *gin.Context) {
 		return
 	}
 
-	db := config.InitMysql()
-
-	var (
-		admin []admin.Admin
-	)
-
-	res := db.Find(&admin)
-
-	fmt.Println(res.RowsAffected)
-
 	c.JSON(http.StatusOK, gin.H{"message": "Successfully authenticated user"})
+}
+
+func (a LoginAPI) Logout(c *gin.Context) {
+	session := sessions.Default(c)
+	user := session.Get(userkey)
+	if user == nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid session token"})
+		return
+	}
+	session.Delete(userkey)
+	if err := session.Save(); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save session"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Successfully logged out"})
+}
+
+func (a LoginAPI) Me(c *gin.Context) {
+	session := sessions.Default(c)
+	user := session.Get(userkey)
+	c.JSON(http.StatusOK, gin.H{"user": user})
+}
+
+func (a LoginAPI) Status(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"status": "You are logged in"})
 }
