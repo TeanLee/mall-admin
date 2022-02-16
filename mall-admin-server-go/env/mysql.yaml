@@ -7,5 +7,6 @@ db:
     db-name: "mall"
     parameters: "charset=utf8mb4&parseTime=True&loc=Local"
   redis:
-    addr: ""
+    addr: "localhost:6379"
     password: ""
+    session-size: 50

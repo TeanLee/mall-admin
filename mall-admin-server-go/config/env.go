@@ -18,8 +18,9 @@ type Mysql struct {
 }
 
 type Redis struct {
-	Addr     string `yaml:"addr"`
-	Password string `yaml:"password"`
+	Addr        string `yaml:"addr"`
+	Password    string `yaml:"password"`
+	SessionSize int    `yaml:"session-size"`
 }
 
 type Env struct {
