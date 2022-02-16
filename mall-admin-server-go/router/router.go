@@ -12,7 +12,7 @@ type Router struct {
 
 func (a *Router) RegisterAPI(app *gin.Engine) {
 	app.POST("/login", a.LoginAPI.Login)
-	app.GET("/logout", a.LoginAPI.Logout)
+	app.POST("/logout", a.LoginAPI.Logout)
 
 	private := app.Group("/private")
 	private.Use(middleware.AuthRequired()).Use(middleware.SuperAdminRequired())

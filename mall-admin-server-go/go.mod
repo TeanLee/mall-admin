@@ -3,6 +3,7 @@ module mall-admin-server-go
 go 1.17
 
 require (
+	github.com/gin-contrib/sessions v0.0.4
 	github.com/gin-gonic/contrib v0.0.0-20201101042839-6a891bf89f19
 	github.com/gin-gonic/gin v1.7.7
 	gopkg.in/yaml.v2 v2.2.8

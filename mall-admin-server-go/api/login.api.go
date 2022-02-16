@@ -1,7 +1,7 @@
 package api
 
 import (
-	"github.com/gin-gonic/contrib/sessions"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"mall-admin-server-go/service"
 	"net/http"

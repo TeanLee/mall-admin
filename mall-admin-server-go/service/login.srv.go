@@ -1,10 +1,14 @@
 package service
 
 import (
-	"github.com/gin-gonic/contrib/sessions"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"mall-admin-server-go/model"
 )
+
+//var (
+//	session =
+//)
 
 type LoginSrv struct {
 	userName string
