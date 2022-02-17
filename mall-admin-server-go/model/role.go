@@ -21,14 +21,14 @@ func GetRoles() ([]Role, error) {
 	return roles, nil
 }
 
-func GetRoleByRoleId(id int) (*Role, error) {
+func GetRoleByRoleId(id int) (Role, error) {
 	var role Role
 	err := db.Where("role_id = ?", id).First(&role).Error
 	if err != nil && err != gorm.ErrRecordNotFound {
-		return nil, err
+		return role, err
 	}
 
-	return &role, nil
+	return role, nil
 }
 
 func AddRole(data map[string]interface{}) error {

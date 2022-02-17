@@ -1,8 +1,10 @@
 package api
 
 import (
+	"fmt"
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
+	"mall-admin-server-go/model"
 	"mall-admin-server-go/service"
 	"net/http"
 	"strings"
@@ -76,7 +78,11 @@ func (a LoginAPI) Logout(c *gin.Context) {
 func (a LoginAPI) Me(c *gin.Context) {
 	session := sessions.Default(c)
 	user := session.Get(userkey)
-	role := service.GetCurrentRole(c)
+	var role model.Role
+	role, err := service.GetCurrentRole(c)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"err": err})
+	}
 	c.JSON(http.StatusOK, gin.H{"user": user, "role": role.RoleName})
 }
 
@@ -85,15 +91,15 @@ func (a LoginAPI) Status(c *gin.Context) {
 }
 
 func IsSuperAdmin(c *gin.Context) bool {
-	role := service.GetCurrentRole(c)
+	var role model.Role
+	role, err := service.GetCurrentRole(c)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"err": err})
+	}
+	fmt.Println("is super admin:", role.RoleId)
 	if role.RoleId == -1 {
 		return true
 	} else {
 		return false
 	}
 }
-
-//func GetCurrentRole(c *gin.Context) {
-//	session := sessions.Default(c)
-//	userId := session.Get(userkey).(int)
-//}
