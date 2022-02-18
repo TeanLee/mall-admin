@@ -5,6 +5,7 @@
         <SiderBar />
       </el-col>
       <el-col :span="21">
+        <NavBar />
         <AppMain />
       </el-col>
     </el-row>
@@ -14,11 +15,13 @@
 <script>
 import SiderBar from './SiderBar'
 import AppMain from './AppMain'
+import NavBar from './NavBar'
 export default {
     name: 'layout',
     components: {
         SiderBar,
         AppMain,
+        NavBar,
     }
 }
 </script>

@@ -91,5 +91,8 @@ export default {
     width: 50%;
     margin: 0 auto;
   }
+  .el-select {
+    width: 100%;
+  }
 }
 </style>

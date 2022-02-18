@@ -8,8 +8,8 @@ import Layout from '@/layout'
 const routes = [
   {
     path: '/',
-    name: 'Home',
-    redirect: '/product',
+    name: 'login',
+    component: () => import('@/views/login/login'),
     hidden: true,
   },
   {
