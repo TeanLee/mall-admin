@@ -31,6 +31,9 @@
 </template>
 
 <script>
+// import axios from "axios"
+import CategoryService from "@/service/category.service.js"
+
 export default {
   name: 'category-list',
   data() {
@@ -50,7 +53,9 @@ export default {
     }
   },
   created() {
-    
+    CategoryService.getCategories().then(res => {
+      console.log("Resres", res)
+    });
   },
   methods: {
     
