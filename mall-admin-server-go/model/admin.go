@@ -7,7 +7,7 @@ import (
 
 type Admin struct {
 	AdminId  int    `json:"admin_id"`
-	Username string `json:"username"`
+	Username string `json:"username, omitempty"`
 	Password string `json:"password"`
 }
 
@@ -39,7 +39,7 @@ func ExistAdminByUsername(username string) (bool, error) {
 		return false, err
 	}
 
-	if admin.AdminId > -1 {
+	if admin.Username != "" {
 		return true, nil
 	}
 

@@ -15,5 +15,5 @@ func main() {
 	r.Use(middleware.Cors())
 	r2 := router.Router{}
 	r2.RegisterAPI(r)
-	r.Run()
+	r.Run(":8081")
 }
