@@ -9,6 +9,10 @@ class CategoryService {
     return this.api.get('/category');
   }
 
+  updateCategory(categoryId, category) {
+    return this.api.post(`/category/${categoryId}`, category);
+  }
+
   getAvailableServices() {
     return this.getServices()
       .then(list => list.filter(x => x.available));
