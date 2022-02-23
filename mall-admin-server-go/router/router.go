@@ -9,6 +9,7 @@ import (
 type Router struct {
 	LoginAPI    api.LoginAPI
 	CategoryApi api.CategoryAPI
+	ProductApi  api.ProductAPI
 }
 
 func (a *Router) RegisterAPI(app *gin.Engine) {
@@ -29,4 +30,8 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 	//{
 	//	category.GET("/", a.CategoryApi.GetCategories)
 	//}
+
+	product := app.Group("/product")
+	product.GET("", a.ProductApi.GetProducts)
+	product.POST("/:id", a.ProductApi.UpdateProduct)
 }
