@@ -8,8 +8,8 @@
           <span>筛选搜索</span>
         </div>
         <div class="right">
-          <el-button size="small">重置</el-button>
-          <el-button type="primary" size="small">查询结果</el-button>
+          <el-button @click="reset" size="small">重置</el-button>
+          <el-button @click="getProducts" type="primary" size="small">查询结果</el-button>
         </div>
       </div>
       <div class="inputs">
@@ -18,9 +18,9 @@
           <el-col :span="4"><div class="grid-content bg-purple-dark"></div></el-col>
           <el-col :span="10">
             <div class="demo-input-suffix">商品分类：
-              <el-select v-model="value" placeholder="请选择">
+              <el-select v-model="category" placeholder="请选择">
                 <el-option
-                  v-for="item in options"
+                  v-for="item in categories"
                   :key="item.value"
                   :label="item.label"
                   :value="item.value">
@@ -137,28 +137,13 @@
 <script>
 import { cloneDeep } from "lodash"
 import ProductService from "@/service/product.service.js"
+import CategoryService from "@/service/category.service.js"
 
 export default {
   data() {
     return {
       productName: '',
-      options: [{
-        value: '选项1',
-        label: '黄金糕'
-      }, {
-        value: '选项2',
-        label: '双皮奶'
-      }, {
-        value: '选项3',
-        label: '蚵仔煎'
-      }, {
-        value: '选项4',
-        label: '龙须面'
-      }, {
-        value: '选项5',
-        label: '北京烤鸭'
-      }],
-      value: '',
+      category: '',
       tableData: [],
       dialogVisible: false,
       dialogData: {},
@@ -166,10 +151,12 @@ export default {
       pageSize: 6,
       currentPage: 0,
       total: 0,
+      categories: [],
     }
   },
   created() {
     this.getProducts()
+    this.getCategories()
   },
   methods: {
     handleUpdate(row) {
@@ -177,11 +164,30 @@ export default {
       this.dialogData = cloneDeep(row)
     },
     getProducts() {
-      ProductService.getProducts(this.currentPage, this.pageSize).then(res => {
+      ProductService.getProducts(this.currentPage, this.pageSize, this.productName, this.category).then(res => {
         const { data, total } = res
         this.tableData = data
         this.total = total
       })
+    },
+    getCategories() {
+      CategoryService.getCategories().then(res => {
+        const { data } = res
+        this.categories = data.map(item => {
+          return {
+            "label": item.category,
+            "value": item.category_id
+          }
+        })
+        this.categories.push({
+          "label": "全部",
+          "val": ""
+        })
+      })
+    },
+    reset() {
+      this.productName = ""
+      this.category = ""
     },
     handleClose() {
       this.dialogVisible = false

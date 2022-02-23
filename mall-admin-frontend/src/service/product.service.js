@@ -5,8 +5,8 @@ class ProductService {
     this.api = api;
   }
 
-  getProducts(page = 0, pageSize = 10) {
-    return this.api.get('/product', {page, pageSize});
+  getProducts(page = 0, pageSize = 10, productName = "", category = "") {
+    return this.api.get('/product', {page, pageSize, productName, category});
   }
 
   updateProduct(productId, product) {
