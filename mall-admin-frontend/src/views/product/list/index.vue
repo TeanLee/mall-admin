@@ -34,104 +34,175 @@
     <el-table
       :data="tableData"
       border
-      style="width: 100%">
+      style="width: 100%"
+      max-height="100%">
       <el-table-column
-        prop="date"
-        label="日期">
+        prop="product_id"
+        label="ID">
       </el-table-column>
       <el-table-column
-        prop="name"
-        label="姓名">
+        label="商品名">
+        <template slot-scope="scope">
+          <el-tooltip class="item" effect="light" :content="scope.row.title" placement="top">
+            <span style="margin-left: 10px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">{{ scope.row.title }}</span>
+          </el-tooltip>
+        </template>
       </el-table-column>
       <el-table-column
-        prop="province"
-        label="省份">
+        prop="category_id"
+        label="商品分类">
       </el-table-column>
       <el-table-column
-        prop="city"
-        label="市区">
+        prop="price"
+        label="现价">
       </el-table-column>
       <el-table-column
-        prop="address"
-        label="地址">
+        prop="old_price"
+        label="原价">
       </el-table-column>
       <el-table-column
-        prop="zip"
-        label="邮编">
+        prop="sub_title"
+        label="次标题">
+      </el-table-column>
+      <el-table-column
+        label="封面图">
+        <template slot-scope="scope">
+          <el-tooltip class="item" effect="light" :content="scope.row.banner" placement="top">
+            <span style="margin-left: 10px; overflow: hidden; text-overflow: ellipsis; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical;">{{ scope.row.banner }}</span>
+          </el-tooltip>
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="unit"
+        label="计量单位">
       </el-table-column>
       <el-table-column
         fixed="right"
         label="操作"
         width="200">
         <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" size="small">编辑</el-button>
-          <el-button type="danger" size="small">删除</el-button>
+          <el-button @click="handleUpdate(scope.row)" size="small">编辑</el-button>
+          <el-button @click="handleDelete(scope.row)" type="danger" size="small">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
+
+    <el-pagination
+      style="margin-top: 15px;"
+      background
+      layout="prev, pager, next"
+      @current-change="handleCurrentChange"
+      @prev-click="prevClick"
+      @next-click="nextClick"
+      :page-size="pageSize"
+      :total="total">
+    </el-pagination>
+
+    <el-dialog
+      title="修改分类"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :before-close="handleClose">
+      <el-form :model="dialogData">
+        <el-form-item label="商品名" :label-width="formLabelWidth">
+          <el-input v-model="dialogData.title" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="商品分类" :label-width="formLabelWidth">
+          <el-input v-model.number="dialogData.category_id" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="现价" :label-width="formLabelWidth">
+          <el-input v-model.number="dialogData.price" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="原价" :label-width="formLabelWidth">
+          <el-input v-model.number="dialogData.old_price" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="次标题" :label-width="formLabelWidth">
+          <el-input v-model="dialogData.sub_title" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="封面图" :label-width="formLabelWidth">
+          <el-input v-model="dialogData.banner" autocomplete="off"></el-input>
+        </el-form-item>
+        <el-form-item label="计量单位" :label-width="formLabelWidth">
+          <el-input v-model="dialogData.unit" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleClose">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-  export default {
-    methods: {
-      handleClick(row) {
-        console.log(row);
-      }
-    },
+import { cloneDeep } from "lodash"
+import ProductService from "@/service/product.service.js"
 
-    data() {
-      return {
-        productName: '',
-        options: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
-        value: '',
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1517 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1519 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1516 弄',
-          zip: 200333
-        }]
-      }
+export default {
+  data() {
+    return {
+      productName: '',
+      options: [{
+        value: '选项1',
+        label: '黄金糕'
+      }, {
+        value: '选项2',
+        label: '双皮奶'
+      }, {
+        value: '选项3',
+        label: '蚵仔煎'
+      }, {
+        value: '选项4',
+        label: '龙须面'
+      }, {
+        value: '选项5',
+        label: '北京烤鸭'
+      }],
+      value: '',
+      tableData: [],
+      dialogVisible: false,
+      dialogData: {},
+      formLabelWidth: '120px',
+      pageSize: 6,
+      currentPage: 0,
+      total: 0,
+    }
+  },
+  created() {
+    this.getProducts()
+  },
+  methods: {
+    handleUpdate(row) {
+      this.dialogVisible = true
+      this.dialogData = cloneDeep(row)
+    },
+    getProducts() {
+      ProductService.getProducts(this.currentPage, this.pageSize).then(res => {
+        const { data, total } = res
+        this.tableData = data
+        this.total = total
+      })
+    },
+    handleClose() {
+      this.dialogVisible = false
+      ProductService.updateProduct(this.dialogData.product_id, this.dialogData).then(() => {
+        this.getProducts()
+      })
+    },
+    prevClick() {
+      this.currentPage --
+      this.getProducts()
+    },
+    nextClick() {
+      this.currentPage ++
+      this.getProducts()
+    },
+    handleCurrentChange(val) {
+      this.currentPage = val - 1
+      this.getProducts()
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
