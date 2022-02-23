@@ -28,7 +28,10 @@ func (ProductAPI) GetProducts(c *gin.Context) {
 
 	offset := page * pageSize
 
-	products, count, err := service.GetProducts(offset, pageSize)
+	productName := c.Query("productName")
+	category := c.Query("category")
+
+	products, count, err := service.GetProducts(offset, pageSize, productName, category)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed get resource", "detail": err})
 		return

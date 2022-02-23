@@ -23,9 +23,9 @@ func GetProducts() ([]Product, error) {
 	return products, nil
 }
 
-func GetProductsByPagination(offset int, pageSize int) ([]Product, error) {
+func GetProductsByPagination(offset int, pageSize int, productName string, category string) ([]Product, error) {
 	var products []Product
-	if err := db.Offset(offset).Limit(pageSize).Find(&products).Error; err != nil {
+	if err := db.Offset(offset).Limit(pageSize).Where("title LIKE ? and category_id LIKE ?", "%"+productName+"%", category+"%").Find(&products).Error; err != nil {
 		return products, err
 	}
 	return products, nil
@@ -41,7 +41,7 @@ func GetProductById(productId int) (Product, error) {
 
 func UpdateProduct(productId int, data Product) error {
 	var oldProduct Product
-	if err := db.Where("category_id = ?", productId).First(&oldProduct).Error; err != nil {
+	if err := db.Where(" product_id = ?", productId).First(&oldProduct).Error; err != nil {
 		return err
 	}
 	/**
@@ -51,7 +51,7 @@ func UpdateProduct(productId int, data Product) error {
 	db.Model(&user).Where("category_id = ?", categoryId).Updates(User{Name: "hello", Age: 18, Active: false})
 	// UPDATE users SET name='hello', age=18, updated_at = '2013-11-17 21:34:10' WHERE id = 111;
 	*/
-	if err := db.Model(&oldProduct).Where("category_id = ?", productId).Updates(data).Error; err != nil {
+	if err := db.Model(&oldProduct).Where(" product_id = ?", productId).Updates(data).Error; err != nil {
 		return err
 	}
 	return nil

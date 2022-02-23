@@ -7,8 +7,8 @@ import (
 
 type ProductSrv struct{}
 
-func GetProducts(offset int, pageSize int) ([]model.Product, int64, error) {
-	products, err := model.GetProductsByPagination(offset, pageSize)
+func GetProducts(offset int, pageSize int, productName string, category string) ([]model.Product, int64, error) {
+	products, err := model.GetProductsByPagination(offset, pageSize, productName, category)
 	total := model.CountProduct()
 	if err != nil {
 		return nil, total, err
