@@ -64,3 +64,11 @@ func CountProduct() int64 {
 	}
 	return total
 }
+
+func AddProduct(product Product) (int, error) {
+	sql := db.Create(&product)
+	if err := sql.Error; err != nil {
+		return -1, err
+	}
+	return 0, nil
+}

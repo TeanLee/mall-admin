@@ -56,3 +56,16 @@ func (ProductAPI) UpdateProduct(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"data": id})
 	return
 }
+
+func (ProductAPI) AddProduct(c *gin.Context) {
+	var product model.Product
+	if err := c.Bind(&product); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"data": "参数有误"})
+		return
+	}
+
+	_, err := service.AddProduct(product)
+	if err != nil {
+		return
+	}
+}

@@ -34,4 +34,5 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 	product := app.Group("/product")
 	product.GET("", a.ProductApi.GetProducts)
 	product.POST("/:id", a.ProductApi.UpdateProduct)
+	product.POST("/add", a.ProductApi.AddProduct)
 }

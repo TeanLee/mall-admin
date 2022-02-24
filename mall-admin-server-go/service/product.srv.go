@@ -33,3 +33,11 @@ func UpdateProduct(productId int, data interface{}) error {
 	product.ProductId = productId
 	return model.UpdateProduct(productId, product)
 }
+
+func AddProduct(product model.Product) (int, error) {
+	_, err := model.AddProduct(product)
+	if err != nil {
+		return -1, err
+	}
+	return 0, nil
+}
