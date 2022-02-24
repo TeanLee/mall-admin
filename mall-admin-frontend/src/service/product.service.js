@@ -13,6 +13,10 @@ class ProductService {
     return this.api.post(`/product/${productId}`, product);
   }
 
+  addProduct(params) {
+    return this.api.post(`/product/add`, params);
+  }
+
   getAvailableServices() {
     return this.getServices()
       .then(list => list.filter(x => x.available));
