@@ -11,8 +11,8 @@ import (
 func main() {
 	r := gin.Default()
 
-	r.Use(sessions.Sessions("mysession", config.InitSessionStore()))
 	r.Use(middleware.Cors())
+	r.Use(sessions.Sessions("mysession", config.InitSessionStore()))
 	r2 := router.Router{}
 	r2.RegisterAPI(r)
 	r.Run(":8081")
