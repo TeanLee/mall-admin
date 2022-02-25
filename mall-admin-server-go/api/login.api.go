@@ -51,7 +51,10 @@ func (a LoginAPI) Login(c *gin.Context) {
 	session := sessions.Default(c)
 
 	session.Options(sessions.Options{
+		Path:     "/",
+		MaxAge:   0,
 		SameSite: http.SameSiteNoneMode,
+		HttpOnly: true,
 		Secure:   true,
 	})
 	// Save the username in the session

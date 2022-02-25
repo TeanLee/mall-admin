@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-contrib/sessions/redis"
+	"net/http"
 )
 
 func InitSessionStore() sessions.Store {
@@ -10,6 +11,14 @@ func InitSessionStore() sessions.Store {
 	password := GetEnv().Db.Redis.Password
 	sessionSize := GetEnv().Db.Redis.SessionSize
 	store, err := redis.NewStore(sessionSize, "tcp", addr, password, []byte("store"))
+
+	store.Options(sessions.Options{
+		Path:     "/",
+		MaxAge:   0,
+		SameSite: http.SameSiteNoneMode,
+		HttpOnly: true,
+		Secure:   true,
+	})
 
 	if err != nil {
 		panic(err)
