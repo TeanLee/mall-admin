@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { get as getValue } from 'lodash';
+import { Message } from "element-ui";
 
 /**
  * auth service handle global authrization.
@@ -26,9 +27,10 @@ export default {
         Vue.noty.error('后端出问题了, 请联系管理员');
         break;
       case 401:
+        Message.error("未授权，请先登录");
         if (Vue.$router) {
           Vue.$router.push({
-            name: 'home',
+            name: 'login',
           });
         }
         break;
