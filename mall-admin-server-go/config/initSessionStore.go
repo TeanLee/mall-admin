@@ -14,10 +14,11 @@ func InitSessionStore() sessions.Store {
 
 	store.Options(sessions.Options{
 		Path:     "/",
-		MaxAge:   0,
-		SameSite: http.SameSiteDefaultMode,
+		MaxAge:   60 * 60 * 2,
+		SameSite: http.SameSiteNoneMode,
 		HttpOnly: true,
-		Secure:   false,
+		Secure:   true,
+		Domain:   "*",
 	})
 
 	if err != nil {
