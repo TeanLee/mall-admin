@@ -52,6 +52,7 @@ func (a LoginAPI) Login(c *gin.Context) {
 
 	// Save the username in the session
 	session.Set(userkey, admin.AdminId) // In real world usage you'd set this to the users ID
+
 	if err := session.Save(); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save session", "5r": err.Error()})
 		return

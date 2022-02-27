@@ -24,8 +24,11 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 	}
 
 	category := app.Group("/category")
-	category.GET("", a.CategoryApi.GetCategories)
-	category.POST("/:id", a.CategoryApi.UpdateCategory)
+	category.Use(middleware.AuthRequired())
+	{
+		category.GET("", a.CategoryApi.GetCategories)
+		category.POST("/:id", a.CategoryApi.UpdateCategory)
+	}
 	//category.Use(middleware.AuthRequired())
 	//{
 	//	category.GET("/", a.CategoryApi.GetCategories)
