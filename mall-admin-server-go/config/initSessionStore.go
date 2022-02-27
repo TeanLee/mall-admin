@@ -14,7 +14,7 @@ func InitSessionStore() sessions.Store {
 
 	store.Options(sessions.Options{
 		Path:     "/",
-		MaxAge:   0,
+		MaxAge:   60 * 60 * 2,
 		SameSite: http.SameSiteDefaultMode,
 		HttpOnly: true,
 		Secure:   false,
