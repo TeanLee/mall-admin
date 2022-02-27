@@ -24,6 +24,7 @@ const (
 )
 
 func (a LoginAPI) Login(c *gin.Context) {
+
 	// 获取 body 中的所有数据
 	var loginParam LoginParam
 
@@ -46,6 +47,7 @@ func (a LoginAPI) Login(c *gin.Context) {
 
 	if verify == false {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "Authentication failed"})
+		return
 	}
 
 	session := sessions.Default(c)

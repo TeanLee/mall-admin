@@ -17,7 +17,8 @@ func InitSessionStore() sessions.Store {
 		MaxAge:   60 * 60 * 2,
 		SameSite: http.SameSiteDefaultMode,
 		HttpOnly: true,
-		Secure:   false,
+		Secure:   true,
+		Domain:   "*",
 	})
 
 	if err != nil {

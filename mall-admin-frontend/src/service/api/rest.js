@@ -5,6 +5,7 @@ class REST {
     const axiosConfig = {
       baseURL: 'http://127.0.0.1:8081',
       timeout: 1000,
+      withCredentials: true
     };
     // const axiosConfig = config;
     this.endPointURL = endPointURL;
