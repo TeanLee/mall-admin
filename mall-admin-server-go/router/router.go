@@ -10,6 +10,7 @@ type Router struct {
 	LoginAPI    api.LoginAPI
 	CategoryApi api.CategoryAPI
 	ProductApi  api.ProductAPI
+	UserApi     api.UserAPI
 }
 
 func (a *Router) RegisterAPI(app *gin.Engine) {
@@ -40,5 +41,12 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 		product.GET("", a.ProductApi.GetProducts)
 		product.POST("/:id", a.ProductApi.UpdateProduct)
 		product.POST("/add", a.ProductApi.AddProduct)
+	}
+
+	user := app.Group("/user")
+	user.Use(middleware.AuthRequired())
+	{
+		user.GET("", a.UserApi.GetUsers)
+		user.POST("add", a.UserApi.AddUser)
 	}
 }
