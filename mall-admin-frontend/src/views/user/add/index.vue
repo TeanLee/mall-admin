@@ -10,10 +10,10 @@
           <el-input v-model="ruleForm.address"></el-input>
         </el-form-item>
         <el-form-item label="联系电话" prop="phone">
-          <el-input v-model.number="ruleForm.phone"></el-input>
+          <el-input v-model="ruleForm.phone"></el-input>
         </el-form-item>
         <el-form-item label="收件人" prop="receiver">
-          <el-input v-model.number="ruleForm.receiver"></el-input>
+          <el-input v-model="ruleForm.receiver"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="submitForm('ruleForm')">立即创建</el-button>
@@ -58,9 +58,20 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          UserService.addUser(this.ruleForm)
+          UserService.addUser(this.ruleForm).then(() => {
+            this.resetForm('ruleForm')
+            this.$message({
+              showClose: true,
+              message: '用户新增成功！',
+              type: 'success'
+            });
+          })
         } else {
-          console.log('error submit!!');
+          this.$message({
+            showClose: true,
+            message: 'error submit!!',
+            type: 'error'
+          });
           return false;
         }
       });
