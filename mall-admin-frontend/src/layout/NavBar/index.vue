@@ -1,12 +1,12 @@
 <template>
   <div class="navbar">
     <div class="username">
-      <el-dropdown>
+      <el-dropdown @command="handleCommand">
         <span class="el-dropdown-link">
-          current user<i class="el-icon-arrow-down el-icon--right"></i>
+          {{ username }}<i class="el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>退出登陆</el-dropdown-item>
+          <el-dropdown-item command="logout">退出登录</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
@@ -14,8 +14,22 @@
 </template>
 
 <script>
-export default {
+import { mapGetters } from 'vuex';
+import AuthService from "@/service/auth.service.js"
 
+export default {
+  computed: {
+    ...mapGetters(['username'])
+  },
+  methods: {
+    handleCommand(command) {
+      if(command != 'logout') return
+      AuthService.logout().then(() => {
+        this.$store.dispatch('deleteUserInfo');
+        this.$router.push('/')
+      })
+    }
+  }
 }
 </script>
 

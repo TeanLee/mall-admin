@@ -14,6 +14,7 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import AuthService from "@/service/auth.service.js"
 
 export default {
@@ -34,12 +35,14 @@ export default {
     }
   },
   methods: {
+    ...mapActions(['saveUserName']),
     login() {
       AuthService.login({
         username: this.ruleForm.username,
         password: this.ruleForm.password
       }).then(res => {
         console.log("res：", res)
+        this.$store.dispatch('saveUserName',this.ruleForm.username);
         this.$router.push('/category/list')
       })
     }
