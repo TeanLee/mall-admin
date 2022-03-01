@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.26.0",
     "core-js": "^3.6.5",
+    "echarts": "^4.9.0",
     "element-ui": "^2.15.6",
     "lodash": "^4.17.21",
     "path": "^0.12.7",

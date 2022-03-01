@@ -32,7 +32,14 @@ const routes = [
         title: '添加商品',
         meta: { title: 'Documentation', icon: 'documentation', affix: true },
         component: () => import('@/views/product/add')
-      }
+      },
+      {
+        path: 'summary',
+        name: 'product-summary',
+        title: '商品统计',
+        meta: { title: 'Dashboard', icon: 'dashboard', affix: true },
+        component: () => import('@/views/product/summary')
+      },
     ]
   },
   {

@@ -3429,6 +3429,13 @@
     "jsbn" "~0.1.0"
     "safer-buffer" "^2.1.0"
 
+"echarts@^4.9.0":
+  "integrity" "sha512-+ugizgtJ+KmsJyyDPxaw2Br5FqzuBnyOWwcxPKO6y0gc5caYcfnEUIlNStx02necw8jmKmTafmpHhGo4XDtEIA=="
+  "resolved" "https://registry.npmmirror.com/echarts/-/echarts-4.9.0.tgz"
+  "version" "4.9.0"
+  dependencies:
+    "zrender" "4.3.2"
+
 "ee-first@1.1.1":
   "integrity" "sha1-WQxhFWsK4vTwJVcyoViyZrxWsh0="
   "resolved" "https://registry.npm.taobao.org/ee-first/download/ee-first-1.1.1.tgz"
@@ -9115,3 +9122,8 @@
     "is-ci" "^1.0.10"
     "normalize-path" "^1.0.0"
     "strip-indent" "^2.0.0"
+
+"zrender@4.3.2":
+  "integrity" "sha512-bIusJLS8c4DkIcdiK+s13HiQ/zjQQVgpNohtd8d94Y2DnJqgM1yjh/jpDb8DoL6hd7r8Awagw8e3qK/oLaWr3g=="
+  "resolved" "https://registry.npmmirror.com/zrender/-/zrender-4.3.2.tgz"
+  "version" "4.3.2"
