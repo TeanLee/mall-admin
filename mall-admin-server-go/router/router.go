@@ -41,6 +41,7 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 		product.GET("", a.ProductApi.GetProducts)
 		product.POST("/:id", a.ProductApi.UpdateProduct)
 		product.POST("/add", a.ProductApi.AddProduct)
+		product.GET("/most-add", a.ProductApi.MostAdd)
 	}
 
 	user := app.Group("/user")

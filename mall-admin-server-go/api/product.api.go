@@ -2,10 +2,12 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
+	"mall-admin-server-go/config"
 	"mall-admin-server-go/model"
 	"mall-admin-server-go/service"
 	"net/http"
 	"strconv"
+	"strings"
 )
 
 type ProductAPI struct {
@@ -68,4 +70,38 @@ func (ProductAPI) AddProduct(c *gin.Context) {
 	if err != nil {
 		return
 	}
+}
+
+func (ProductAPI) MostAdd(c *gin.Context) {
+	var rdb = config.InitRedis()
+	// ZRevRange 取出加入购物车数量前十的商品（分数从高到低）
+	productsSet, err := rdb.ZRevRange("products", 0, 10).Result()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"data": err})
+		return
+	}
+
+	// productsTop map 用于存储 { 商品名：加购数量 }
+	productsTop := make(map[string]float64)
+
+	for _, val := range productsSet {
+		// 在小程序埋点时，redis 中记录的方式是 product-ID 因此通过 split 方式取出商品 id
+		productIdStr := strings.Split(val, "-")[1]
+		productId, err := strconv.Atoi(productIdStr)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"data": err})
+			return
+		}
+		// 通过 productId 找商品名
+		product, err := model.GetProductById(productId)
+		if err != nil {
+			c.JSON(http.StatusInternalServerError, gin.H{"data": err})
+			return
+		}
+
+		// ZScore 通过 product-id 反找 score （被加购的数量）
+		productsTop[product.Title] = rdb.ZScore("products", val).Val()
+	}
+	c.JSON(http.StatusOK, gin.H{"data": productsTop})
+
 }
