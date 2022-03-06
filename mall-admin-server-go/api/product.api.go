@@ -81,10 +81,12 @@ func (ProductAPI) MostAdd(c *gin.Context) {
 		return
 	}
 
-	// productsTop map 用于存储 { 商品名：加购数量 }
-	productsTop := make(map[string]float64)
+	var mostAddArray []map[string]string
 
 	for _, val := range productsSet {
+		// productsTop map 用于存储 { 商品名：加购数量 }
+		productsTop := make(map[string]string)
+
 		// 在小程序埋点时，redis 中记录的方式是 product-ID 因此通过 split 方式取出商品 id
 		productIdStr := strings.Split(val, "-")[1]
 		productId, err := strconv.Atoi(productIdStr)
@@ -100,8 +102,10 @@ func (ProductAPI) MostAdd(c *gin.Context) {
 		}
 
 		// ZScore 通过 product-id 反找 score （被加购的数量）
-		productsTop[product.Title] = rdb.ZScore("products", val).Val()
+		productsTop["name"] = product.Title
+		productsTop["count"] = strconv.FormatFloat(rdb.ZScore("products", val).Val(), 'f', 0, 64)
+		mostAddArray = append(mostAddArray, productsTop)
 	}
-	c.JSON(http.StatusOK, gin.H{"data": productsTop})
+	c.JSON(http.StatusOK, gin.H{"data": mostAddArray})
 
 }
