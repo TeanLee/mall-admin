@@ -13,7 +13,22 @@
         <result column="color" property="color" />
         <result column="name" property="name" />
     </resultMap>
-    <update id="updataRoleByAdminId">
-        update mall.role_admin set role_id=#{roleId} where admin_id=#{adminId};
+    <update id="updateCategoryById">
+        update mall.role_admin
+        <set>
+            <if test="category != ''">
+                category = #{category},
+            </if>
+            <if test="icon != ''">
+                icon=#{icon},
+            </if>
+            <if test="icon != ''">
+                color=#{color},
+            </if>
+            <if test="icon != ''">
+                name=#{name},
+            </if>
+        </set>
+        where categoryId = #{categoryId}
     </update>
 </mapper>

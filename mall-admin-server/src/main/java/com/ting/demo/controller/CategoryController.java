@@ -6,9 +6,7 @@ import com.ting.demo.service.CategoryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -26,5 +24,11 @@ public class CategoryController {
     public RespBean getAllCategories() {
         List<Category> categoryList = categoryService.getAllCategories();
         return new RespBean("200", "success", categoryList);
+    }
+
+    @PostMapping("/{categoryId}")
+    public RespBean updateCategoryById(@PathVariable("categoryId") int categoryId, @RequestParam(required = false, value = "category", defaultValue = "") String category, @RequestParam(required = false, value = "icon", defaultValue = "") String icon, @RequestParam(required = false, value = "color", defaultValue = "") String color, @RequestParam(required = false, value = "name", defaultValue = "") String name) {
+        int updateRes = categoryService.updateCategoryById(categoryId, category, icon, color, name);
+        return new RespBean("200", "success", updateRes);
     }
 }
