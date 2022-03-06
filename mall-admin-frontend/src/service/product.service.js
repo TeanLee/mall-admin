@@ -17,6 +17,10 @@ class ProductService {
     return this.api.post(`/product/add`, params);
   }
 
+  productMostAdd() {
+    return this.api.get(`/product/most-add`);
+  }
+
   getAvailableServices() {
     return this.getServices()
       .then(list => list.filter(x => x.available));
