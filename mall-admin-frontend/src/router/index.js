@@ -94,13 +94,6 @@ const routes = [
         title: '添加用户',
         meta: { title: 'Documentation', icon: 'documentation', affix: true },
         component: () => import('@/views/user/add')
-      },
-      {
-        path: 'summary',
-        name: 'user-summary',
-        title: '用户统计',
-        meta: { title: 'Documentation', icon: '', affix: true },
-        component: () => import('@/views/user/summary')
       }
     ]
   },
