@@ -6,16 +6,16 @@
       border
       style="width: 100%">
       <el-table-column
-        prop="role"
-        label="权限">
-      </el-table-column>
-      <el-table-column
         prop="username"
         label="用户名">
       </el-table-column>
       <el-table-column
         prop="password"
         label="密码">
+      </el-table-column>
+      <el-table-column
+        prop="role_name"
+        label="权限">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -30,11 +30,15 @@
     <el-button class="add-user" type="primary" @click.native="dialogFormVisible=true">新增用户</el-button>
 
     <el-dialog :title="dialogType === 'edit' ? '编辑用户' : '新增用户'" :visible.sync="dialogFormVisible" :close-on-click-modal="false" destroy-on-close ref="dialogForm" @close="closeDialog">
-      <el-form :model="form" :rules="rules">
+      <el-form :model="form" :rules="rules" ref="ruleForm">
         <el-form-item label="用户角色" label-width="120px">
-          <el-select v-model="form.role" placeholder="请选择活动区域">
-            <el-option label="普通商户" value="1"></el-option>
-            <el-option label="管理员" value="2"></el-option>
+          <el-select v-model="form.role_id" placeholder="请选择用户角色">
+            <el-option
+              v-for="item in roles"
+              :key="item.role_id"
+              :label="item.role_name"
+              :value="item.role_id">
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="用户名" label-width="120px">
@@ -45,7 +49,7 @@
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button @click="submitForm('ruleForm')">取 消</el-button>
         <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
       </div>
     </el-dialog>
@@ -53,28 +57,22 @@
 </template>
 
 <script>
+import { cloneDeep } from "lodash"
+import PermissionService from "@/service/permission.service.js"
+
 export default {
   name: 'category-list',
   data() {
     return {
-      tableData: [
-        {
-          role: '1',
-          username: '11',
-          password: '111'
-        },
-        {
-          role: '2',
-          username: '22',
-          password: '222'
-        }
-      ],
+      tableData: [],
       dialogFormVisible: false,
       form: {
-        role: '',
+        role_name: '',
         username: '',
-        password: ''
+        password: '',
+        role_id: ''
       },
+      roles: [],
       rules: {
         username: [
           { required: true, message: '请输入用户名', trigger: 'blur' },
@@ -88,14 +86,21 @@ export default {
     }
   },
   created() {
-    
+    PermissionService.getPermissionList().then(res => {
+      const { data } = res
+      this.tableData = data
+    })
+    PermissionService.GetRoles().then(res => {
+      const { data } = res
+      this.roles = data
+    })
   },
   methods: {
     handleClick(row) {
       console.log(row);
     },
     editRow(row) {
-      this.form = row;
+      this.form = cloneDeep(row);
       this.dialogType = 'edit';
       this.dialogFormVisible = true;
     },
@@ -103,6 +108,17 @@ export default {
       this.form = {};
       this.dialogFormVisible = false;
       this.dialogType = '';
+    },
+    submitForm(formName) {
+      this.$refs[formName].validate((valid) => {
+        if (valid) {
+          // ProductService.addProduct(this.ruleForm)
+          this.dialogFormVisible = false
+        } else {
+          console.log('error submit!!');
+          return false;
+        }
+      });
     },
   }
 }
