@@ -17,3 +17,11 @@ func (AdminAPI) GetAdminList(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"data": list})
 }
+
+func (AdminAPI) GetRoles(c *gin.Context) {
+	roles, err := service.GetRoles()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed get resource", "detail": err})
+	}
+	c.JSON(http.StatusOK, gin.H{"data": roles})
+}

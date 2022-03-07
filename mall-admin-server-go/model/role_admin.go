@@ -1,6 +1,7 @@
 package model
 
 import (
+	"fmt"
 	"gorm.io/gorm"
 )
 
@@ -15,9 +16,10 @@ func (RoleAdmin) TableName() string {
 }
 
 type Permission struct {
-	username string `json:"username"`
-	password string `json:"password"`
-	roleName string `json:"role_name"`
+	Username string `json:"username"`
+	Password string `json:"password"`
+	RoleName string `json:"role_name"`
+	RoleId   int    `json:"role_id"`
 }
 
 func GetAdminIdByRoleId(roleId int) (int, error) {
@@ -50,9 +52,10 @@ func UpdateRoleIdByAdminId(adminId int, roleId int) {
 
 func GetAdminList() ([]Permission, error) {
 	var adminList []Permission
-	//if err := db.Debug().Model(&RoleAdmin{}).Select("admin.username, admin.password, role.role_name").Joins("inner join mall.role on mall.role_admin.role_id = mall.role.role_id inner join mall.admin on mall.role_admin.admin_id = mall.admin.admin_id").Scan(&adminList).Error; err != nil {
-	//	return adminList, err
-	//}
-	db.Debug().Raw("SELECT admin.username, admin.password, role.role_name FROM mall.role_admin inner join mall.role on mall.role_admin.role_id = mall.role.role_id inner join mall.admin on mall.role_admin.admin_id = mall.admin.admin_id").Scan(&adminList)
+	if err := db.Model(&RoleAdmin{}).Select("admin.username, admin.password, role.role_name, role.role_id").Joins("inner join mall.role on mall.role_admin.role_id = mall.role.role_id inner join mall.admin on mall.role_admin.admin_id = mall.admin.admin_id").Scan(&adminList).Error; err != nil {
+		fmt.Println("err：", err)
+		return adminList, err
+	}
+	//db.Debug().Raw("SELECT admin.username, admin.password, role.role_name FROM mall.role_admin inner join mall.role on mall.role_admin.role_id = mall.role.role_id inner join mall.admin on mall.role_admin.admin_id = mall.admin.admin_id").Find(&adminList)
 	return adminList, nil
 }

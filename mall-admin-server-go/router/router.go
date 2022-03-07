@@ -56,5 +56,6 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 	admin.Use(middleware.AuthRequired())
 	{
 		admin.GET("", a.AdminApi.GetAdminList)
+		admin.GET("roles", a.AdminApi.GetRoles)
 	}
 }

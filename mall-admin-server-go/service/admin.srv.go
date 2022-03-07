@@ -13,3 +13,11 @@ func GetAdmins() ([]model.Admin, error) {
 func GetAdminByUsername(username string) (*model.Admin, error) {
 	return model.GetAdminByUsername(username)
 }
+
+func GetRoles() ([]model.Role, error) {
+	roles, err := model.GetRoles()
+	if err != nil {
+		return roles, err
+	}
+	return roles, nil
+}
