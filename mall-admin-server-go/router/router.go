@@ -11,6 +11,7 @@ type Router struct {
 	CategoryApi api.CategoryAPI
 	ProductApi  api.ProductAPI
 	UserApi     api.UserAPI
+	AdminApi    api.AdminAPI
 }
 
 func (a *Router) RegisterAPI(app *gin.Engine) {
@@ -49,5 +50,11 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 	{
 		user.GET("", a.UserApi.GetUsers)
 		user.POST("add", a.UserApi.AddUser)
+	}
+
+	admin := app.Group("/permission")
+	admin.Use(middleware.AuthRequired())
+	{
+		admin.GET("", a.AdminApi.GetAdminList)
 	}
 }
