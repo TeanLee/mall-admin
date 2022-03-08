@@ -1,6 +1,9 @@
 package service
 
-import "mall-admin-server-go/model"
+import (
+	"encoding/json"
+	"mall-admin-server-go/model"
+)
 
 func ExistByID(id int) (bool, error) {
 	return model.ExistAdminByID(id)
@@ -20,4 +23,36 @@ func GetRoles() ([]model.Role, error) {
 		return roles, err
 	}
 	return roles, nil
+}
+
+type PermissionSrv struct {
+	adminName string
+	password  string
+	role      string
+}
+
+func GetAdminList() ([]model.Permission, error) {
+	list, err := model.GetAdminList()
+	if err != nil {
+		return list, err
+	}
+	return list, err
+}
+
+func UpdateAdminUsernameAndPassword(adminId int, data interface{}) error {
+	marshalAdmin, err := json.Marshal(data)
+	if err != nil {
+		return err
+	}
+	var admin model.Admin
+	err = json.Unmarshal(marshalAdmin, &admin)
+	if err != nil {
+		return err
+	}
+	admin.AdminId = adminId
+	return model.UpdateAdmin(adminId, admin)
+}
+
+func UpdateAdminRole(adminId int, roleId int) error {
+	return model.UpdateAdminRole(adminId, roleId)
 }

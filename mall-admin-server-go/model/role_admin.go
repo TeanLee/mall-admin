@@ -16,6 +16,7 @@ func (RoleAdmin) TableName() string {
 }
 
 type Permission struct {
+	AdminId  int    `json:"admin_id"`
 	Username string `json:"username"`
 	Password string `json:"password"`
 	RoleName string `json:"role_name"`
@@ -52,10 +53,17 @@ func UpdateRoleIdByAdminId(adminId int, roleId int) {
 
 func GetAdminList() ([]Permission, error) {
 	var adminList []Permission
-	if err := db.Model(&RoleAdmin{}).Select("admin.username, admin.password, role.role_name, role.role_id").Joins("inner join mall.role on mall.role_admin.role_id = mall.role.role_id inner join mall.admin on mall.role_admin.admin_id = mall.admin.admin_id").Scan(&adminList).Error; err != nil {
+	if err := db.Model(&RoleAdmin{}).Select("admin.admin_id, admin.username, admin.password, role.role_name, role.role_id").Joins("inner join mall.role on mall.role_admin.role_id = mall.role.role_id inner join mall.admin on mall.role_admin.admin_id = mall.admin.admin_id").Scan(&adminList).Error; err != nil {
 		fmt.Println("err：", err)
 		return adminList, err
 	}
 	//db.Debug().Raw("SELECT admin.username, admin.password, role.role_name FROM mall.role_admin inner join mall.role on mall.role_admin.role_id = mall.role.role_id inner join mall.admin on mall.role_admin.admin_id = mall.admin.admin_id").Find(&adminList)
 	return adminList, nil
+}
+
+func UpdateAdminRole(adminId int, roleId int) error {
+	if err := db.Model(&RoleAdmin{}).Where("admin_id = ?", adminId).Update("role_id", roleId).Error; err != nil {
+		return err
+	}
+	return nil
 }
