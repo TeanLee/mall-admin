@@ -2,7 +2,6 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"mall-admin-server-go/model"
 	"mall-admin-server-go/service"
 	"net/http"
 	"strconv"
@@ -10,6 +9,12 @@ import (
 
 type AdminAPI struct {
 	PermissionSrv service.PermissionSrv
+}
+
+type PermissionUpdateParams struct {
+	Username string `json:"username"`
+	Password string `json:"password"`
+	RoleId   int    `json:"role_id"`
 }
 
 func (AdminAPI) GetAdminList(c *gin.Context) {
@@ -30,7 +35,7 @@ func (AdminAPI) GetRoles(c *gin.Context) {
 
 func (AdminAPI) UpdateRole(c *gin.Context) {
 	// 解析 query 的参数
-	adminId := c.Query("admin_id")
+	adminId := c.Param("admin_id")
 	if adminId == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"message": "The lack of admin id"})
 		return
@@ -42,7 +47,7 @@ func (AdminAPI) UpdateRole(c *gin.Context) {
 		return
 	}
 
-	var params model.Admin
+	var params PermissionUpdateParams
 	err = c.Bind(&params)
 
 	// 修改 admin.username、admin.password
@@ -53,15 +58,13 @@ func (AdminAPI) UpdateRole(c *gin.Context) {
 	}
 
 	// 修改权限
-	var paramRole model.RoleAdmin
-	err = c.Bind(&paramRole)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed update resource", "detail": err})
+		c.JSON(http.StatusBadRequest, gin.H{"message": "params bind error", "detail": err})
 		return
 	}
 
 	// 前端传递参数时，admin id 在 query 中，role id 在 body 中
-	err = service.UpdateAdminRole(id, paramRole.RoleId)
+	err = service.UpdateAdminRole(id, params.RoleId)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed update resource", "detail": err})
 		return
