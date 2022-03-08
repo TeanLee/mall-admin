@@ -16,6 +16,10 @@ class PermissionService {
   updateRole(adminId, params) {
     return this.api.post(`/permission/update-role/${adminId}`, params)
   }
+
+  deleteAdmin(adminId) {
+    return this.api.delete(`/permission/${adminId}`)
+  }
 }
 
 export default new PermissionService()

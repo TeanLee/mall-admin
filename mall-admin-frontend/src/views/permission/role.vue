@@ -23,7 +23,7 @@
         width="200">
         <template slot-scope="scope">
           <el-button @click="editRow(scope.row)" size="small">编辑</el-button>
-          <el-button @click="handleClick(scope.row)" size="small" type="danger">删除</el-button>
+          <el-button @click="handleDelete(scope.row)" size="small" type="danger">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -102,8 +102,21 @@ export default {
         this.roles = data
       })
     },
-    handleClick(row) {
-      console.log(row);
+    handleDelete(row) {
+      this.$confirm('此操作将永久删除该用户, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        PermissionService.deleteAdmin(row.admin_id).then(() => {
+          this.getPermissionList()
+          this.$message({
+            type: 'success',
+            message: '用户删除成功!'
+          });
+        })
+      });
+      
     },
     editRow(row) {
       this.form = cloneDeep(row);
