@@ -9,8 +9,12 @@ class PermissionService {
     return this.api.get(`/permission`);
   }
 
-  GetRoles() {
+  getRoles() {
     return this.api.get(`/permission/roles`);
+  }
+
+  updateRole(adminId, params) {
+    return this.api.post(`/permission/update-role/${adminId}`, params)
   }
 }
 

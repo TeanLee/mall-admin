@@ -31,7 +31,7 @@
 
     <el-dialog :title="dialogType === 'edit' ? '编辑用户' : '新增用户'" :visible.sync="dialogFormVisible" :close-on-click-modal="false" destroy-on-close ref="dialogForm" @close="closeDialog">
       <el-form :model="form" :rules="rules" ref="ruleForm">
-        <el-form-item label="用户角色" label-width="120px">
+        <el-form-item label="用户角色" label-width="120px" prop="role_id">
           <el-select v-model="form.role_id" placeholder="请选择用户角色">
             <el-option
               v-for="item in roles"
@@ -41,16 +41,16 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="用户名" label-width="120px">
+        <el-form-item label="用户名" label-width="120px" prop="username">
           <el-input v-model="form.username" autocomplete="off"></el-input>
         </el-form-item>
-        <el-form-item label="密码" label-width="120px">
+        <el-form-item label="密码" label-width="120px" prop="password">
           <el-input v-model="form.password" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
-        <el-button @click="submitForm('ruleForm')">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submitForm('ruleForm')">确 定</el-button>
       </div>
     </el-dialog>
   </div>
@@ -86,16 +86,22 @@ export default {
     }
   },
   created() {
-    PermissionService.getPermissionList().then(res => {
-      const { data } = res
-      this.tableData = data
-    })
-    PermissionService.GetRoles().then(res => {
-      const { data } = res
-      this.roles = data
-    })
+    this.getPermissionList()
+    this.getRoles()
   },
   methods: {
+    getPermissionList() {
+      PermissionService.getPermissionList().then(res => {
+        const { data } = res
+        this.tableData = data
+      })
+    },
+    getRoles() {
+      PermissionService.getRoles().then(res => {
+        const { data } = res
+        this.roles = data
+      })
+    },
     handleClick(row) {
       console.log(row);
     },
@@ -112,7 +118,9 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
-          // ProductService.addProduct(this.ruleForm)
+          PermissionService.updateRole(this.form.admin_id, this.form).then(() => {
+            this.getPermissionList()
+          })
           this.dialogFormVisible = false
         } else {
           console.log('error submit!!');
