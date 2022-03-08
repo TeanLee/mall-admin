@@ -103,7 +103,7 @@ func AddAdmin(data map[string]interface{}) error {
 	return nil
 }
 
-func DeleteAdmin(id int) error {
+func DeleteAdminInAdmin(id int) error {
 	if err := db.Where("admin_id = ?", id).Delete(Admin{}).Error; err != nil {
 		return err
 	}

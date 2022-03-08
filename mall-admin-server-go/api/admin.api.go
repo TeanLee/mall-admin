@@ -72,3 +72,24 @@ func (AdminAPI) UpdateRole(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": "success updated"})
 }
+
+func (AdminAPI) DeleteAdmin(c *gin.Context) {
+	// 解析 query 的参数
+	adminId := c.Param("admin_id")
+	if adminId == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"message": "The lack of admin id"})
+		return
+	}
+
+	id, err := strconv.Atoi(adminId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"data": "请说明要修改的 Admin Id"})
+		return
+	}
+
+	err = service.DeleteAdmin(id)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"data": "delete admin error", "detail": err})
+		return
+	}
+}

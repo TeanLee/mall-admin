@@ -56,3 +56,13 @@ func UpdateAdminUsernameAndPassword(adminId int, data interface{}) error {
 func UpdateAdminRole(adminId int, roleId int) error {
 	return model.UpdateAdminRole(adminId, roleId)
 }
+
+func DeleteAdmin(adminId int) error {
+	if err := model.DeleteAdminInAdmin(adminId); err != nil {
+		return err
+	}
+	if err := model.DeleteAdminInRoleAdmin(adminId); err != nil {
+		return err
+	}
+	return nil
+}

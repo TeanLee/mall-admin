@@ -67,3 +67,11 @@ func UpdateAdminRole(adminId int, roleId int) error {
 	}
 	return nil
 }
+
+func DeleteAdminInRoleAdmin(id int) error {
+	if err := db.Where("admin_id = ?", id).Delete(Admin{}).Error; err != nil {
+		return err
+	}
+
+	return nil
+}

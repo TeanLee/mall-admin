@@ -58,5 +58,6 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 		admin.GET("", a.AdminApi.GetAdminList)
 		admin.GET("/roles", a.AdminApi.GetRoles)
 		admin.POST("/update-role/:admin_id", a.AdminApi.UpdateRole)
+		admin.DELETE("/:admin_id", a.AdminApi.DeleteAdmin)
 	}
 }
