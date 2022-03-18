@@ -1,12 +1,16 @@
 db:
   mysql:
-    host: "127.0.0.1"
+#    host: "127.0.0.1"
+#    localhost 替换
+    host: "host.docker.internal"
     port: 3306
     user: "root"
     password: "123456"
     db-name: "mall"
     parameters: "charset=utf8mb4&parseTime=True&loc=Local"
   redis:
-    addr: "localhost:6379"
+#    addr: "localhost:6379"
+#    host.docker.internal 是 Dockerfile 连接主机的 localhost
+    addr: "host.docker.internal:6379"
     password: ""
     session-size: 50

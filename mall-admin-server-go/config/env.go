@@ -4,9 +4,12 @@ import (
 	"fmt"
 	"gopkg.in/yaml.v2"
 	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
 )
 
-const configYaml = "/Users/litingting/front-end/mall-admin/mall-admin-server-go/env/mysql.yaml"
+const configYaml = "/env/mysql.yaml"
 
 type Mysql struct {
 	Host       string `yaml:"host"`
@@ -37,7 +40,7 @@ func (a Mysql) DSN() string {
 
 func GetEnv() Env {
 	t := Env{}
-	data, err := os.ReadFile(configYaml)
+	data, err := os.ReadFile(GetAppPath() + configYaml)
 
 	if err != nil {
 		panic(err)
@@ -49,4 +52,13 @@ func GetEnv() Env {
 	}
 	fmt.Println(t.Db.DSN())
 	return t
+}
+
+// GetAppPath 解决执行 go build 时，获取不到相对路径的问题
+func GetAppPath() string {
+	file, _ := exec.LookPath(os.Args[0])
+	path, _ := filepath.Abs(file)
+	index := strings.LastIndex(path, string(os.PathSeparator))
+
+	return path[:index]
 }
