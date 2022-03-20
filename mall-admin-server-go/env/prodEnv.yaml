@@ -1,0 +1,19 @@
+# 打包成 docker-compose，能直接读取 yaml 配置文件的服务名字---mydb、cache等
+db:
+  mysql:
+    #    host: "127.0.0.1"
+    #    localhost 替换
+    #    host: "host.docker.internal"
+    host: "mydb"
+    port: 3306
+    user: "root"
+    password: "123456"
+    db-name: "mall"
+    parameters: "charset=utf8mb4&parseTime=True&loc=Local"
+  redis:
+    #    addr: "localhost:6379"
+    #    host.docker.internal 是 Dockerfile 连接主机的 localhost
+    #    addr: "host.docker.internal:6379"
+    addr: "cache:6379"
+    password: ""
+    session-size: 50

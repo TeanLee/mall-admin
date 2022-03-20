@@ -1,0 +1,13 @@
+# 本地运行的 host 是 127.0.0.1
+db:
+  mysql:
+    host: "127.0.0.1"
+    port: 3306
+    user: "root"
+    password: "123456"
+    db-name: "mall"
+    parameters: "charset=utf8mb4&parseTime=True&loc=Local"
+  redis:
+    addr: "localhost:6379"
+    password: ""
+    session-size: 50
