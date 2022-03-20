@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-const configYaml = "/env/mysql.yaml"
+//const configYaml = "/env/local.yaml"
 
 type Mysql struct {
 	Host       string `yaml:"host"`
@@ -40,7 +40,17 @@ func (a Mysql) DSN() string {
 
 func GetEnv() Env {
 	t := Env{}
-	data, err := os.ReadFile(GetAppPath() + configYaml)
+
+	data, err := os.ReadFile("/Users/litingting/front-end/mall-admin/mall-admin-server-go/env/local.yaml")
+
+	// 根据进程中的环境变量参数，判断使用哪份配置文件
+	currentENV := os.Getenv("env")
+	fmt.Println("currentENV", currentENV)
+	if currentENV == "production" {
+		data, err = os.ReadFile(GetAppPath() + "/env/prodEnv.yaml")
+	} else if currentENV == "staging" {
+		data, err = os.ReadFile(GetAppPath() + "/env/devEnv.yaml")
+	}
 
 	if err != nil {
 		panic(err)

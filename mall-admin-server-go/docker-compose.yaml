@@ -9,29 +9,26 @@ services:
     ports:
       - "3306:3306"
     tty: true
+    restart: always
 # redis部分 参考文档：https://geshan.com.np/blog/2022/01/redis-docker/
   cache:
     image: redis:6.2-alpine
     ports:
       - "6379:6379"
     container_name: mall-admin-server_redis
+    restart: always
   app:
     build:
       context: .
     volumes:
       - "./:/workspace"
     container_name: mall-admin-server_app
+    environment:
+      env: production
     ports:
       - "8081:8081"
     tty: true
-    environment:
-      DB_HOST: mydb
-      DB_PORT: 3306
-      DB_USER: root
-      DB_PASSWORD: 123456
-      DB_NAME: mysql
-      REDIS_HOST: cache
-      REDIS_PORT: 6379
+    restart: always
     depends_on:
       - mydb
       - cache
