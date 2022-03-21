@@ -1,10 +1,10 @@
 <template>
   <div class="main-layout">
     <el-row style="height:100%">
-      <el-col :span="3">
+      <el-col :span="4">
         <SiderBar />
       </el-col>
-      <el-col :span="21">
+      <el-col :span="20">
         <NavBar />
         <AppMain />
       </el-col>
