@@ -20,7 +20,7 @@ type LoginParam struct {
 }
 
 const (
-	userkey = "user"
+	Userkey = "user"
 )
 
 func (a LoginAPI) Login(c *gin.Context) {
@@ -52,8 +52,10 @@ func (a LoginAPI) Login(c *gin.Context) {
 
 	session := sessions.Default(c)
 
+	fmt.Println("sessionId---set：", session.ID())
+
 	// Save the username in the session
-	session.Set(userkey, admin.AdminId) // In real world usage you'd set this to the users ID
+	session.Set(Userkey, admin.AdminId) // In real world usage you'd set this to the users ID
 
 	if err := session.Save(); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save session", "5r": err.Error()})
@@ -65,12 +67,12 @@ func (a LoginAPI) Login(c *gin.Context) {
 
 func (a LoginAPI) Logout(c *gin.Context) {
 	session := sessions.Default(c)
-	user := session.Get(userkey)
+	user := session.Get(Userkey)
 	if user == nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid session token"})
 		return
 	}
-	session.Delete(userkey)
+	session.Delete(Userkey)
 	if err := session.Save(); err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to save session"})
 		return
@@ -80,7 +82,7 @@ func (a LoginAPI) Logout(c *gin.Context) {
 
 func (a LoginAPI) Me(c *gin.Context) {
 	session := sessions.Default(c)
-	user := session.Get(userkey)
+	user := session.Get(Userkey)
 	var role model.Role
 	role, err := service.GetCurrentRole(c)
 	if err != nil {
