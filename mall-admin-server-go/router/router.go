@@ -12,6 +12,7 @@ type Router struct {
 	ProductApi  api.ProductAPI
 	UserApi     api.UserAPI
 	AdminApi    api.AdminAPI
+	OrderApi    api.OrderAPI
 }
 
 func (a *Router) RegisterAPI(app *gin.Engine) {
@@ -60,4 +61,7 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 		admin.POST("/update-role/:admin_id", a.AdminApi.UpdateRole)
 		admin.DELETE("/:admin_id", a.AdminApi.DeleteAdmin)
 	}
+
+	order := app.Group("/order")
+	order.GET("", a.OrderApi.GetOrders)
 }
