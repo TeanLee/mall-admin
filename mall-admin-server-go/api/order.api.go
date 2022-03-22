@@ -5,6 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"mall-admin-server-go/service"
 	"net/http"
+	"strconv"
 )
 
 type OrderAPI struct {
@@ -19,19 +20,14 @@ type QueryOrderParam struct {
 }
 
 func (OrderAPI) GetOrders(c *gin.Context) {
-	var param QueryOrderParam
-	err := c.BindJSON(&param)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "参数错误", "detail": err})
-		return
-	}
-	page := param.Page
-	fmt.Println("page：", page)
+	page, _ := strconv.Atoi(c.Query("page"))
+
+	pageSize, _ := strconv.Atoi(c.Query("pageSize"))
+
 	if page < 0 {
 		page = 0
 	}
 
-	pageSize := param.PageSize
 	fmt.Println("pageSize：", pageSize)
 	switch {
 	case pageSize > 100:
@@ -42,10 +38,7 @@ func (OrderAPI) GetOrders(c *gin.Context) {
 
 	offset := page * pageSize
 
-	productName := param.ProductName
-	category := param.Category
-
-	orders, count, err := service.GetOrders(offset, pageSize, productName, category)
+	orders, count, err := service.GetOrders(offset, pageSize)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"message": "Failed get resource", "detail": err})
 		return

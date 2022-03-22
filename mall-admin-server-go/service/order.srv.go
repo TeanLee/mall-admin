@@ -32,9 +32,9 @@ type OrderResType struct {
 	Status     int         `json:"status"`
 }
 
-func GetOrders(offset int, pageSize int, productName string, category string) ([]OrderResType, int64, error) {
+func GetOrders(offset int, pageSize int) ([]OrderResType, int64, error) {
 	var orders []model.Order
-	orders, err := model.GetOrders(offset, pageSize, productName, category)
+	orders, err := model.GetOrders(offset, pageSize)
 
 	var resOrder []OrderResType
 	total := model.CountOrder()

@@ -32,7 +32,7 @@ func (Order) TableName() string {
 	return "order"
 }
 
-func GetOrders(offset int, pageSize int, productName string, category string) ([]Order, error) {
+func GetOrders(offset int, pageSize int) ([]Order, error) {
 	var orders []Order
 	//if err := db.Debug().Offset(offset).Limit(pageSize).Where("title LIKE ? and category_id LIKE ?", "%"+productName+"%", category+"%").Find(&orders).Error; err != nil {
 	//	return orders, err
