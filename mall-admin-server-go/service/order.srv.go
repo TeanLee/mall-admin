@@ -28,7 +28,7 @@ func newOrderItem(productItem ProductItem) OrderItem {
 type OrderResType struct {
 	OrderItems []OrderItem `json:"order_items"`
 	OrderTime  string      `json:"order_time"`
-	Uid        int         `json:"uid"`
+	UserName   string      `json:"user_name"`
 	Status     int         `json:"status"`
 }
 
@@ -54,7 +54,12 @@ func GetOrders(offset int, pageSize int, productName string, category string) ([
 			tempOrderItem := newOrderItem(tempItem)
 			tempOrderItem.Count = item.Count
 			tempOrder.OrderItems = append(tempOrder.OrderItems, tempOrderItem)
-			tempOrder.Uid = order.Uid
+
+			user, err := GetUserById(order.Uid)
+			if err != nil {
+				return nil, 0, err
+			}
+			tempOrder.UserName = user.Username
 		}
 		resOrder = append(resOrder, tempOrder)
 	}
