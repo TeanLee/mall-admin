@@ -1,7 +1,7 @@
 <template>
   <div class="order-list">
     <h1>订单列表</h1>
-    <div class="header-search">
+    <!-- <div class="header-search">
       <div class="tip">
         <div class="left">
           <i class="el-icon-search"></i>
@@ -30,34 +30,60 @@
           </el-col>
         </el-row>
       </div>
-    </div>
+    </div> -->
     <el-table
       :data="tableData"
       border
       style="width: 100%">
       <el-table-column
-        prop="date"
-        label="日期">
+        prop="order_time"
+        label="下单时间">
+        <template slot-scope="scope">
+          {{ timestampToTime(scope.row.order_time) }}
+        </template>
       </el-table-column>
       <el-table-column
-        prop="name"
-        label="姓名">
+        prop="user_name"
+        label="用户名"
+        width="80">
       </el-table-column>
       <el-table-column
-        prop="province"
-        label="省份">
+        prop="receiver"
+        label="收件人"
+        width="80">
       </el-table-column>
       <el-table-column
-        prop="city"
-        label="市区">
+        prop="address"
+        label="收货地址">
+      </el-table-column>
+     <el-table-column prop="order_items" label="订单列表">
+        <template slot-scope="scope">
+          <el-table
+            :data="scope.row.order_items"
+            border
+            style="width: 100%">
+            <el-table-column
+              prop="count"
+              label="数量"
+              width="30">
+            </el-table-column>
+            <el-table-column
+              prop="product"
+              label="商品名"
+              width="300">
+              <template slot-scope="scope">
+               {{ scope.row.product.title }}
+              </template>
+            </el-table-column>
+          </el-table>
+          <!-- <span v-for="(item, index) in scope.row.order_items" :key="index">
+            {{ item.count }}--{{ item.product.title }}
+          </span> -->
+        </template>
       </el-table-column>
       <el-table-column
         prop="address"
         label="地址">
-      </el-table-column>
-      <el-table-column
-        prop="zip"
-        label="邮编">
       </el-table-column>
       <el-table-column
         fixed="right"
@@ -73,65 +99,58 @@
 </template>
 
 <script>
-  export default {
-    methods: {
-      handleClick(row) {
-        console.log(row);
-      }
+import OrderService from "@/service/order.service.js"
+export default {
+  created() {
+    this.getOrders()
+  },
+  methods: {
+    handleClick(row) {
+      console.log(row);
     },
+    getOrders() {
+      OrderService.getOrders(this.currentPage, this.pageSize).then(res => {
+        const { data } = res
+        this.tableData = data
+      });
+    },
+    timestampToTime(timestamp) {
+      var date = new Date(parseInt(timestamp));//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+      var Y = date.getFullYear() + '-';
+      var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+      var D = date.getDate() + ' ';
+      var h = date.getHours() + ':';
+      var m = date.getMinutes();
+      return Y + M + D + h + m;
+    }
+  },
 
-    data() {
-      return {
-        productName: '',
-        options: [{
-          value: '选项1',
-          label: '黄金糕'
-        }, {
-          value: '选项2',
-          label: '双皮奶'
-        }, {
-          value: '选项3',
-          label: '蚵仔煎'
-        }, {
-          value: '选项4',
-          label: '龙须面'
-        }, {
-          value: '选项5',
-          label: '北京烤鸭'
-        }],
-        value: '',
-        tableData: [{
-          date: '2016-05-02',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1518 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-04',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1517 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-01',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1519 弄',
-          zip: 200333
-        }, {
-          date: '2016-05-03',
-          name: '王小虎',
-          province: '上海',
-          city: '普陀区',
-          address: '上海市普陀区金沙江路 1516 弄',
-          zip: 200333
-        }]
-      }
+  data() {
+    return {
+      pageSize: 6,
+      currentPage: 0,
+      productName: '',
+      options: [{
+        value: '选项1',
+        label: '黄金糕'
+      }, {
+        value: '选项2',
+        label: '双皮奶'
+      }, {
+        value: '选项3',
+        label: '蚵仔煎'
+      }, {
+        value: '选项4',
+        label: '龙须面'
+      }, {
+        value: '选项5',
+        label: '北京烤鸭'
+      }],
+      value: '',
+      tableData: []
     }
   }
+}
 </script>
 
 <style lang="scss" scoped>
