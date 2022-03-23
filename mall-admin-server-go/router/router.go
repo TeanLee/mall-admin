@@ -63,5 +63,8 @@ func (a *Router) RegisterAPI(app *gin.Engine) {
 	}
 
 	order := app.Group("/order")
-	order.GET("", a.OrderApi.GetOrders)
+	order.Use(middleware.AuthRequired())
+	{
+		order.GET("", a.OrderApi.GetOrders)
+	}
 }

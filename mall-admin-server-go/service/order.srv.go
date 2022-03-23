@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/rs/zerolog/log"
 	"mall-admin-server-go/model"
 )
 
@@ -30,6 +31,9 @@ type OrderResType struct {
 	OrderTime  string      `json:"order_time"`
 	UserName   string      `json:"user_name"`
 	Status     int         `json:"status"`
+	Address    string      `json:"address"`
+	Phone      string      `json:"phone"`
+	Receiver   string      `json:"receiver"`
 }
 
 func GetOrders(offset int, pageSize int) ([]OrderResType, int64, error) {
@@ -45,12 +49,16 @@ func GetOrders(offset int, pageSize int) ([]OrderResType, int64, error) {
 		for _, item := range order.OrderItem {
 			var tempItem ProductItem
 			var product model.Product
-			if product, err = model.GetProductById(item.ProductID); err != nil {
-				tempItem.Title = product.Title
-				tempItem.Banner = product.Banner
-				tempItem.Price = product.Price
-				tempItem.CategoryId = product.CategoryId
+			product, err = model.GetProductById(item.ProductID)
+			if err != nil {
+				return nil, 0, err
 			}
+			tempItem.Title = product.Title
+			tempItem.Banner = product.Banner
+			tempItem.Price = product.Price
+			tempItem.CategoryId = product.CategoryId
+			log.Info().Msgf("tempItem：%v", tempItem)
+
 			tempOrderItem := newOrderItem(tempItem)
 			tempOrderItem.Count = item.Count
 			tempOrder.OrderItems = append(tempOrder.OrderItems, tempOrderItem)
@@ -59,7 +67,12 @@ func GetOrders(offset int, pageSize int) ([]OrderResType, int64, error) {
 			if err != nil {
 				return nil, 0, err
 			}
+
 			tempOrder.UserName = user.Username
+			tempOrder.Phone = user.Phone
+			tempOrder.Address = user.Address
+			tempOrder.Receiver = user.Receiver
+			tempOrder.OrderTime = order.OrderTime
 		}
 		resOrder = append(resOrder, tempOrder)
 	}
