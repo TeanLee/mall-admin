@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.24.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: mall-frontend
+  name: mall-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: mall-frontend
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.24.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: mall-frontend
+    spec:
+      containers:
+        - env:
+            - name: VUE_APP_API_URL
+              value: http://127.0.0.1:8081
+          image: tean123/mall-admin-server-frontend:1.0.0
+          name: mall-admin-server-front-end
+          ports:
+            - containerPort: 8080
+          resources: {}
+          tty: true
+      restartPolicy: Always
+status: {}
