@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.24.0 (HEAD)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: mydb
+  name: mydb
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: mydb
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.24.0 (HEAD)
+      creationTimestamp: null
+      labels:
+        io.kompose.service: mydb
+    spec:
+      containers:
+        - env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "123456"
+          image: tean123/mall-admin-server-mysql:1.0.0
+          name: mall-admin-server-db
+          ports:
+            - containerPort: 3306
+          resources: {}
+          tty: true
+      restartPolicy: Always
+status: {}
