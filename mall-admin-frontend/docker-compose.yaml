@@ -1,0 +1,12 @@
+version: '3'
+services:
+  mall-frontend:
+    build:
+      context: .
+    container_name: mall-admin-server-front-end
+    environment:
+      VUE_APP_API_URL: 'http://127.0.0.1:8081'
+    ports:
+      - "8080:8080"
+    tty: true
+    restart: always
