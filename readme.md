@@ -48,6 +48,7 @@
 | ElementUI | UI组件库 | https://element.eleme.cn/#/zh-CN |
 | Sass | 样式拓展语言 | https://sass-lang.com/ |
 
+
 <br><br>
 
 **后端技术**
@@ -56,9 +57,15 @@
 | Go |Go 语言 | <https://go.dev/> |
 | Gin |Go (Golang) 编写的 Web 框架 | <https://github.com/gin-gonic/gin> |
 | GORM | Golang 的 ORM框架 | <https://gorm.io/index.html> |
-| Docker | 容器 | https://www.docker.com/ |
 | Swagger-UI | 文档生成工具 | <https://github.com/swagger-api/swagger-ui> |
 
+<br><br>
+
+**容器技术**
+| 技术 | 说明 | 官网 |
+|  ----  | ----  | ----  |
+| Docker | 容器 | https://www.docker.com/ |
+| Kubernetes | 容器编排引擎 | https://kubernetes.io/ |
 
 <br><br>
 
