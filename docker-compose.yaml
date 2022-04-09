@@ -1,0 +1,34 @@
+version: '3'
+services:
+  mydb:
+    build:
+      context: ./MySQL
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+    container_name: mall-admin-server_db
+    ports:
+      - "3306:3306"
+    tty: true
+    restart: always
+# redis部分 参考文档：https://geshan.com.np/blog/2022/01/redis-docker/
+  cache:
+    image: redis:6.2-alpine
+    ports:
+      - "6379:6379"
+    container_name: mall-admin-server_redis
+    restart: always
+  app:
+    build:
+      context: .
+    volumes:
+      - "./:/workspace"
+    container_name: mall-admin-server_app
+    environment:
+      env: production
+    ports:
+      - "8081:8081"
+    tty: true
+    restart: always
+    depends_on:
+      - mydb
+      - cache
