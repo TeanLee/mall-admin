@@ -17,16 +17,6 @@
 1. 在本机中安装 [Docker](https://www.docker.com/)
 2. 在本文件夹下执行 `docker-compose up --build`
 
-### 技术选型
-
-**后端技术**
-| 技术 | 说明 | 官网 |
-|  ----  | ----  | ----  |
-| Go |Go 语言 | <https://go.dev/> |
-| Gin |Go (Golang) 编写的 Web 框架 | <https://github.com/gin-gonic/gin> |
-| GORM | Golang 的 ORM框架 | <https://gorm.io/index.html> |
-| Swagger-UI | 文档生成工具 | <https://github.com/swagger-api/swagger-ui> |
-
 ## 项目组织结构
 ````
 mall-admin-server-go
@@ -39,3 +29,22 @@ mall-admin-server-go
 ├── router -- 定义项目重的后端接口路由
 ├── service -- service 层
 ````
+
+## 技术选型
+
+**后端技术**
+
+| 技术 | 说明 | 官网 |
+|  ----  | ----  | ----  |
+| Go |Go 语言 | <https://go.dev/> |
+| Gin |Go (Golang) 编写的 Web 框架 | <https://github.com/gin-gonic/gin> |
+| GORM | Golang 的 ORM框架 | <https://gorm.io/index.html> |
+| Swagger-UI | 文档生成工具 | <https://github.com/swagger-api/swagger-ui> |
+
+
+**容器技术**
+
+| 技术 | 说明 | 官网 |
+|  ----  | ----  | ----  |
+| Docker | 容器 | https://www.docker.com/ |
+| Kubernetes | 容器编排引擎 | https://kubernetes.io/ |
