@@ -1,11 +1,13 @@
 # 商城类微信小程序的后台管理平台
-对应的商城类微信小程序实现：
+对应的商城类微信小程序实现：https://github.com/TeanLee/hema
 ## mall-admin-front
-商城类后台管理平台的前端
+商城类管理平台的前端
+
 技术栈：Vue + Element UI + Sass + HTML + JS +CSS 
 
 ## mall-admin-server-go
 商城类管理平台的后端
+
 技术栈：Go + Gin + GORM + MySQL + Redis
 
 ## 项目简介
