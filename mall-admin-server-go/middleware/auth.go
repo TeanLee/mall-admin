@@ -17,6 +17,7 @@ const (
 func AuthRequired() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := sessions.Default(c)
+		fmt.Println("sessionId：", session.ID())
 		user := session.Get(userkey)
 		fmt.Println("user：", user)
 		if user == nil {
